@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LanzaApp — Tu negocio digital en 48hs</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --negro: #050508;
+  --blanco: #f8f7f4;
+  --acento: #00ff87;
+  --acento2: #ff6b35;
+  --gris: #1a1a1f;
+  --gris2: #2a2a30;
+  --texto-muted: #888890;
+  --borde: rgba(255,255,255,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--negro);
+  color: var(--blanco);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR CUSTOM */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--acento);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, width 0.2s, height 0.2s;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,255,135,0.4);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.12s ease;
+  transform: translate(-50%, -50%);
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  padding: 1.25rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100;
+  background: linear-gradient(to bottom, rgba(5,5,8,0.9), transparent);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem; font-weight: 800;
+  letter-spacing: -1px;
+}
+.nav-logo span { color: var(--acento); }
+.nav-cta {
+  background: var(--acento);
+  color: var(--negro);
+  border: none; border-radius: 8px;
+  padding: 10px 20px;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,255,135,0.3); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 8rem 1.5rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 20%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,255,135,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  bottom: 0; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,255,135,0.08);
+  border: 1px solid rgba(0,255,135,0.2);
+  border-radius: 20px; padding: 6px 16px;
+  font-size: 12px; font-weight: 500;
+  color: var(--acento); letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards;
+}
+.hero-tag::before { content: '●'; font-size: 8px; animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -2px;
+  margin-bottom: 1.25rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards;
+}
+.hero h1 .acento { color: var(--acento); }
+.hero h1 .acento2 { color: var(--acento2); }
+
+.hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--texto-muted);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
+}
+
+.hero-btns {
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards;
+}
+.btn-primary {
+  background: var(--acento); color: var(--negro);
+  border: none; border-radius: 10px;
+  padding: 16px 32px;
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,255,135,0.35); }
+.btn-secondary {
+  background: transparent; color: var(--blanco);
+  border: 1.5px solid var(--borde);
+  border-radius: 10px; padding: 16px 32px;
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+
+/* COUNTER */
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center;
+  opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards;
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800;
+  color: var(--acento); line-height: 1;
+}
+.stat-label { font-size: 12px; color: var(--texto-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* TICKER */
+.ticker {
+  overflow: hidden; border-top: 1px solid var(--borde); border-bottom: 1px solid var(--borde);
+  padding: 1rem 0; background: var(--gris); position: relative; z-index: 1;
+}
+.ticker-inner {
+  display: flex; gap: 3rem;
+  animation: scroll 20s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--texto-muted); text-transform: uppercase; letter-spacing: 1px;
+  display: flex; align-items: center; gap: 1rem;
+}
+.ticker-item::after { content: '✦'; color: var(--acento); font-size: 10px; }
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* SECCIONES */
+section { padding: 6rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+
+.section-tag {
+  font-size: 11px; font-weight: 600; color: var(--acento);
+  text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 1rem; display: block;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800; letter-spacing: -1px;
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.section-sub { font-size: 16px; color: var(--texto-muted); line-height: 1.7; max-width: 520px; }
+
+/* PROBLEMA */
+.problema-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--borde);
+  border: 1px solid var(--borde); border-radius: 16px;
+  overflow: hidden; margin-top: 3rem;
+}
+.problema-item {
+  background: var(--gris);
+  padding: 1.75rem;
+  transition: background 0.2s;
+}
+.problema-item:hover { background: var(--gris2); }
+.prob-icon { font-size: 1.75rem; margin-bottom: 0.75rem; display: block; }
+.prob-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+.prob-desc { font-size: 13px; color: var(--texto-muted); line-height: 1.6; }
+
+/* BENEFICIOS */
+.beneficios-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; align-items: start; }
+.beneficio-card {
+  background: var(--gris); border: 1px solid var(--borde);
+  border-radius: 16px; padding: 1.75rem;
+  transition: transform 0.2s, border-color 0.2s;
+  position: relative; overflow: hidden;
+}
+.beneficio-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--acento); transform: scaleX(0);
+  transition: transform 0.3s ease; transform-origin: left;
+}
+.beneficio-card:hover::before { transform: scaleX(1); }
+.beneficio-card:hover { transform: translateY(-4px); border-color: rgba(0,255,135,0.2); }
+.ben-num {
+  font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800;
+  color: rgba(0,255,135,0.1); line-height: 1; margin-bottom: 0.5rem;
+}
+.ben-icon { font-size: 1.5rem; margin-bottom: 0.75rem; display: block; }
+.ben-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.ben-desc { font-size: 13px; color: var(--texto-muted); line-height: 1.6; }
+
+/* PARA QUIÉNES */
+.profesiones {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-top: 3rem;
+}
+.prof-card {
+  background: var(--gris); border: 1px solid var(--borde);
+  border-radius: 14px; padding: 1.5rem 1.25rem; text-align: center;
+  cursor: pointer; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.prof-card:hover {
+  border-color: var(--acento2);
+  background: rgba(255,107,53,0.05);
+  transform: translateY(-4px);
+}
+.prof-emoji { font-size: 2.2rem; display: block; margin-bottom: 0.5rem; }
+.prof-name { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.prof-desc { font-size: 11px; color: var(--texto-muted); line-height: 1.5; }
+
+/* PROCESO */
+.proceso-steps { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
+.proceso-step {
+  display: flex; gap: 2rem; align-items: flex-start;
+  padding: 2rem 0; border-bottom: 1px solid var(--borde);
+  opacity: 0; transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+.proceso-step.visible { opacity: 1; transform: translateX(0); }
+.proceso-step:last-child { border-bottom: none; }
+.paso-num {
+  font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800;
+  color: rgba(0,255,135,0.15); line-height: 1; flex-shrink: 0; width: 80px;
+}
+.paso-content { flex: 1; }
+.paso-title { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.paso-desc { font-size: 14px; color: var(--texto-muted); line-height: 1.7; }
+.paso-tag {
+  display: inline-block; margin-top: 0.75rem;
+  background: rgba(0,255,135,0.08); border: 1px solid rgba(0,255,135,0.15);
+  border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--acento);
+}
+
+/* PRECIO */
+.precio-box {
+  background: linear-gradient(135deg, var(--gris) 0%, var(--gris2) 100%);
+  border: 1px solid var(--borde); border-radius: 24px;
+  padding: 3rem 2rem; text-align: center; margin-top: 3rem;
+  position: relative; overflow: hidden;
+}
+.precio-box::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0,255,135,0.08), transparent);
+}
+.precio-desde { font-size: 13px; color: var(--texto-muted); text-transform: uppercase; letter-spacing: 1px; }
+.precio-num {
+  font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800;
+  color: var(--acento); line-height: 1; margin: 0.5rem 0;
+}
+.precio-desc { font-size: 14px; color: var(--texto-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+.precio-incluye {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 2rem;
+}
+.incl-tag {
+  background: rgba(255,255,255,0.05); border: 1px solid var(--borde);
+  border-radius: 20px; padding: 5px 14px; font-size: 12px; color: var(--blanco);
+}
+
+/* CTA FINAL */
+.cta-final {
+  background: var(--acento);
+  border-radius: 24px; padding: 4rem 2rem; text-align: center;
+  margin: 0 1.5rem 4rem; position: relative; overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 250px; height: 250px;
+  background: rgba(0,0,0,0.08); border-radius: 50%;
+}
+.cta-final h2 {
+  font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 800; color: var(--negro); letter-spacing: -1px;
+  margin-bottom: 0.75rem; position: relative; z-index: 1;
+}
+.cta-final p { font-size: 15px; color: rgba(0,0,0,0.6); margin-bottom: 2rem; position: relative; z-index: 1; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+.btn-dark {
+  background: var(--negro); color: var(--blanco);
+  border: none; border-radius: 10px; padding: 14px 28px;
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); color: var(--blanco); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--borde);
+  padding: 2rem 1.5rem; text-align: center;
+  font-size: 12px; color: var(--texto-muted);
+}
+footer span { color: var(--acento); }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media(max-width:768px) {
+  .problema-grid { grid-template-columns: 1fr; }
+  .beneficios-layout { grid-template-columns: 1fr; }
+  .profesiones { grid-template-columns: repeat(2,1fr); }
+  .proceso-step { flex-direction: column; gap: 0.5rem; }
+  .paso-num { font-size: 2rem; width: auto; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Lanza<span>App</span></div>
+  <a href="https://wa.me/5493855773682" class="nav-cta">Quiero mi app →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-tag">🚀 Tu negocio digital en 48 horas</div>
+  <h1>Tu <span class="acento">negocio</span><br>en el <span class="acento2">bolsillo</span><br>de tus clientes</h1>
+  <p class="hero-sub">Creamos tu página de reservas y pagos online personalizada, lista para usar.</p>
+  <div class="hero-btns">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Quiero%20información%20sobre%20LanzaApp" class="btn-primary">💬 Hablar por WhatsApp</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" class="btn-secondary">📧 Enviar email</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">48hs</div><div class="stat-label">Entrega promedio</div></div>
+    <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Hosting mensual</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Personalizada</div></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Pagos con Mercado Pago</span>
+    <span class="ticker-item">Reservas online</span>
+    <span class="ticker-item">Google Sheets integrado</span>
+    <span class="ticker-item">Sin hosting mensual</span>
+    <span class="ticker-item">Entrega en 48hs</span>
+    <span class="ticker-item">100% personalizada</span>
+    <span class="ticker-item">Pagos con Mercado Pago</span>
+    <span class="ticker-item">Reservas online</span>
+    <span class="ticker-item">Google Sheets integrado</span>
+    <span class="ticker-item">Sin hosting mensual</span>
+    <span class="ticker-item">Entrega en 48hs</span>
+    <span class="ticker-item">100% personalizada</span>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section>
+  <span class="section-tag reveal">El problema</span>
+  <h2 class="section-title reveal">¿Te pasa esto<br>en tu negocio?</h2>
+  <div class="problema-grid reveal">
+    <div class="problema-item">
+      <span class="prob-icon">📱</span>
+      <div class="prob-title">Turnos por WhatsApp</div>
+      <div class="prob-desc">Gestionás todo manualmente, se cruzan turnos, te olvidás de confirmar y perdés clientes.</div>
+    </div>
+    <div class="problema-item">
+      <span class="prob-icon">💸</span>
+      <div class="prob-title">Cobros en efectivo únicamente</div>
+      <div class="prob-desc">Perdés ventas porque el cliente no tiene efectivo o no puede ir al local a pagar.</div>
+    </div>
+    <div class="problema-item">
+      <span class="prob-icon">📋</span>
+      <div class="prob-title">Sin registro de clientes</div>
+      <div class="prob-desc">No tenés una base de datos de quién te contactó, cuándo vino ni qué pagó.</div>
+    </div>
+    <div class="problema-item">
+      <span class="prob-icon">😩</span>
+      <div class="prob-title">Tiempo perdido en admin</div>
+      <div class="prob-desc">Horas respondiendo mensajes, confirmando turnos y persiguiendo pagos en lugar de trabajar.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section style="background:var(--gris); border-radius:24px; max-width:100%; padding:5rem 1.5rem;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <span class="section-tag reveal">La solución</span>
+    <h2 class="section-title reveal">Todo lo que tu negocio<br>necesita, listo en 48hs</h2>
+    <div class="beneficios-layout">
+      <div class="beneficio-card reveal">
+        <div class="ben-num">01</div>
+        <span class="ben-icon">🌐</span>
+        <div class="ben-title">Página web profesional</div>
+        <div class="ben-desc">Tu propio sitio con tu marca, colores y servicios. Online 24/7 para que tus clientes te encuentren.</div>
+      </div>
+      <div class="beneficio-card reveal">
+        <div class="ben-num">02</div>
+        <span class="ben-icon">💙</span>
+        <div class="ben-title">Cobros con Mercado Pago</div>
+        <div class="ben-desc">Tarjeta de crédito, débito, billetera MP, Pago Fácil y Rapipago. Tus clientes eligen cómo pagar.</div>
+      </div>
+      <div class="beneficio-card reveal">
+        <div class="ben-num">03</div>
+        <span class="ben-icon">📊</span>
+        <div class="ben-title">Registro automático</div>
+        <div class="ben-desc">Cada reserva y pago se guarda automáticamente en una planilla de Google Sheets. Cero trabajo manual.</div>
+      </div>
+      <div class="beneficio-card reveal">
+        <div class="ben-num">04</div>
+        <span class="ben-icon">📅</span>
+        <div class="ben-title">Sistema de turnos</div>
+        <div class="ben-desc">Tus clientes eligen fecha y horario disponible. Vos ves todo organizado en tu planilla en tiempo real.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUIÉNES -->
+<section>
+  <span class="section-tag reveal">Para quiénes</span>
+  <h2 class="section-title reveal">Ideal para cualquier<br>profesional o negocio</h2>
+  <p class="section-sub reveal">Si tenés clientes y querés cobrar online, esto es para vos.</p>
+  <div class="profesiones reveal">
+    <div class="prof-card">
+      <span class="prof-emoji">🧠</span>
+      <div class="prof-name">Psicólogos</div>
+      <div class="prof-desc">Reserva de sesiones + pago anticipado</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">✂️</span>
+      <div class="prof-name">Peluquerías</div>
+      <div class="prof-desc">Turnos por servicio con pago online</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">🏋️</span>
+      <div class="prof-name">Entrenadores</div>
+      <div class="prof-desc">Clases y sesiones con cobro automático</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">🍽️</span>
+      <div class="prof-name">Restaurantes</div>
+      <div class="prof-desc">Pedidos y reservas de mesa online</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">💅</span>
+      <div class="prof-name">Manicuras</div>
+      <div class="prof-desc">Agenda de turnos con señas online</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">🩺</span>
+      <div class="prof-name">Médicos</div>
+      <div class="prof-desc">Consultas con pago previo asegurado</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">🐾</span>
+      <div class="prof-name">Veterinarias</div>
+      <div class="prof-desc">Turnos para consultas y baños</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">📸</span>
+      <div class="prof-name">Fotógrafos</div>
+      <div class="prof-desc">Sesiones con señas y pago total</div>
+    </div>
+    <div class="prof-card">
+      <span class="prof-emoji">🏠</span>
+      <div class="prof-name">Y muchos más</div>
+      <div class="prof-desc">Cualquier servicio con turnos y cobros</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section style="background:var(--gris); border-radius:24px; max-width:100%; padding:5rem 1.5rem;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <span class="section-tag reveal">Cómo funciona</span>
+    <h2 class="section-title reveal">De cero a online<br>en 3 pasos</h2>
+    <div class="proceso-steps">
+      <div class="proceso-step">
+        <div class="paso-num">01</div>
+        <div class="paso-content">
+          <div class="paso-title">Me contás tu negocio</div>
+          <div class="paso-desc">Hablamos por WhatsApp. Me decís tus servicios, precios y cómo querés que se vea tu página. Sin tecnicismos.</div>
+          <span class="paso-tag">⏱ 15 minutos de tu tiempo</span>
+        </div>
+      </div>
+      <div class="proceso-step">
+        <div class="paso-num">02</div>
+        <div class="paso-content">
+          <div class="paso-title">Creo tu página personalizada</div>
+          <div class="paso-desc">Diseño tu sitio con tu identidad, colores y servicios. Integro Mercado Pago y Google Sheets. Todo listo.</div>
+          <span class="paso-tag">⏱ 48hs de trabajo</span>
+        </div>
+      </div>
+      <div class="proceso-step">
+        <div class="paso-num">03</div>
+        <div class="paso-content">
+          <div class="paso-title">La publicamos y la usás</div>
+          <div class="paso-desc">Tu página queda online de forma gratuita. Compartís el link y empezás a recibir reservas y pagos al instante.</div>
+          <span class="paso-tag">⏱ Online para siempre</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIO -->
+<section>
+  <span class="section-tag reveal">Inversión</span>
+  <h2 class="section-title reveal">Un precio justo,<br>una vez</h2>
+  <div class="precio-box reveal">
+    <div class="precio-desde">Desde</div>
+    <div class="precio-num">$80.000</div>
+    <div class="precio-desc">Pago único · Sin cuotas mensuales · Sin sorpresas</div>
+    <div class="precio-incluye">
+      <span class="incl-tag">✓ Diseño personalizado</span>
+      <span class="incl-tag">✓ Mercado Pago integrado</span>
+      <span class="incl-tag">✓ Google Sheets</span>
+      <span class="incl-tag">✓ Sistema de turnos</span>
+      <span class="incl-tag">✓ Hosting gratuito</span>
+      <span class="incl-tag">✓ SSL incluido</span>
+      <span class="incl-tag">✓ Soporte post-entrega</span>
+    </div>
+    <a href="https://wa.me/5493855773682?text=Hola!%20Quiero%20información%20sobre%20LanzaApp" class="btn-primary" style="display:inline-block;">
+      Quiero mi página ahora →
+    </a>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-final">
+  <h2>¿Seguís manejando<br>todo a mano?</h2>
+  <p>Cada día sin tu página online es un cliente que perdés. Hablemos hoy.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Quiero%20información%20sobre%20LanzaApp" class="btn-dark">
+      💬 WhatsApp
+    </a>
+    <a href="https://instagram.com/emiliocabania" class="btn-dark">
+      📸 Instagram
+    </a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" class="btn-dark">
+      📧 Email
+    </a>
+  </div>
+</div>
+
+<footer>
+  <span>LanzaApp</span> · Tu negocio digital en 48hs · Hecho en Argentina 🇦🇷
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) *.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal, .proceso-step').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
