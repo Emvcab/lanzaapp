@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitPro — Entrenador Personal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --verde: #2d7a4f; --verde-dark: #1a5235; --verde-light: #e8f5ee;
+  --naranja: #e8751a; --naranja-light: #fff3e8;
+  --texto: #0f1f15; --texto-muted: #5a7060;
+  --borde: rgba(45,122,79,0.15); --fondo: #f5faf7; --blanco: #ffffff;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--negro, #0a0f0c); color: var(--texto); overflow-x: hidden; }
+.demo-badge { position: fixed; top: 76px; left: 50%; transform: translateX(-50%); background: var(--naranja); color: white; padding: 6px 20px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; z-index: 200; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,15,12,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(45,122,79,0.3); padding: 0 2rem; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: white; letter-spacing: -0.5px; }
+.nav-logo span { color: var(--verde); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--verde); }
+.nav-cta { background: var(--verde); color: white; border: none; border-radius: 6px; padding: 10px 20px; font-size: 12px; font-weight: 600; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: var(--verde-dark); color: white; }
+
+.hero { min-height: 100vh; background: linear-gradient(135deg, #0a0f0c 0%, #0f2018 60%, #1a3025 100%); display: flex; align-items: center; padding: 8rem 4rem 4rem; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(45,122,79,0.15), transparent 70%); }
+.hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; width: 100%; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--verde); font-weight: 600; margin-bottom: 1.5rem; border: 1px solid rgba(45,122,79,0.3); border-radius: 20px; padding: 5px 14px; }
+.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem,5vw,4rem); font-weight: 800; color: white; line-height: 1.05; margin-bottom: 1rem; letter-spacing: -1px; }
+.hero h1 em { font-style: normal; color: var(--verde); }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.8; max-width: 440px; margin-bottom: 2rem; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary { background: var(--verde); color: white; border: none; border-radius: 6px; padding: 14px 28px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-primary:hover { background: var(--verde-dark); transform: translateY(-2px); color: white; }
+.btn-outline { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 14px 28px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-outline:hover { border-color: var(--verde); color: var(--verde); }
+.hero-visual { display: flex; flex-direction: column; gap: 1rem; }
+.hero-main-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(45,122,79,0.3); border-radius: 16px; padding: 2rem; text-align: center; }
+.hero-emoji { font-size: 6rem; display: block; margin-bottom: 1rem; }
+.hero-name { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; color: white; }
+.hero-title { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 1rem; }
+.hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.stat { background: rgba(45,122,79,0.15); border: 1px solid rgba(45,122,79,0.2); border-radius: 10px; padding: 1rem; text-align: center; }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--verde); display: block; }
+.stat-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+
+.section-wrap { padding: 6rem 2rem; }
+.section-wrap.dark { background: #0f1f15; }
+.section-wrap.light { background: var(--fondo); }
+.section-wrap.green { background: var(--verde-light); }
+.section { max-width: 1100px; margin: 0 auto; }
+.section-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--verde); font-weight: 600; margin-bottom: 0.75rem; display: block; }
+.section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+.section-title.white { color: white; }
+.section-title em { font-style: normal; color: var(--verde); }
+.section-sub { font-size: 14px; color: var(--texto-muted); margin-bottom: 3rem; max-width: 500px; line-height: 1.7; }
+.section-sub.white { color: rgba(255,255,255,0.6); }
+
+.servicios-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.serv-card { background: var(--blanco); border-radius: 14px; border: 1px solid var(--borde); padding: 1.75rem; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
+.serv-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--verde); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
+.serv-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(45,122,79,0.15); }
+.serv-card:hover::before { transform: scaleX(1); }
+.serv-icon { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+.serv-nombre { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+.serv-desc { font-size: 12px; color: var(--texto-muted); line-height: 1.6; margin-bottom: 0.75rem; }
+.serv-precio { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--verde); }
+.serv-duracion { font-size: 11px; color: var(--texto-muted); }
+.serv-btn { display: block; width: 100%; background: var(--verde-light); color: var(--verde-dark); border: none; border-radius: 6px; padding: 9px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 1rem; text-decoration: none; transition: all 0.2s; text-align: center; }
+.serv-btn:hover { background: var(--verde); color: white; }
+
+.proceso-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 3rem; }
+.paso { text-align: center; }
+.paso-num { width: 52px; height: 52px; border-radius: 50%; background: var(--verde); color: white; font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+.paso h4 { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; color: white; }
+.paso p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+.reserva-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.reserva-form { background: var(--verde-light); border-radius: 16px; padding: 2.5rem; border: 1px solid var(--borde); }
+.reserva-form h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; margin-bottom: 0.25rem; }
+.reserva-form p { font-size: 13px; color: var(--texto-muted); margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--borde); }
+.fg { margin-bottom: 14px; }
+.fg label { display: block; font-size: 11px; font-weight: 700; color: var(--texto-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.fg input, .fg select { width: 100%; border: 1.5px solid var(--borde); border-radius: 8px; padding: 11px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--texto); background: var(--blanco); outline: none; transition: border-color 0.15s; }
+.fg input:focus, .fg select:focus { border-color: var(--verde); box-shadow: 0 0 0 3px rgba(45,122,79,0.1); }
+.turnos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.turno-opt { border: 1.5px solid var(--borde); border-radius: 8px; padding: 9px 6px; cursor: pointer; text-align: center; font-size: 13px; font-weight: 500; color: var(--texto-muted); transition: all 0.15s; background: var(--blanco); }
+.turno-opt:hover { border-color: var(--verde); color: var(--verde); background: var(--verde-light); }
+.turno-opt.active { border-color: var(--verde); background: var(--verde-light); color: var(--verde-dark); font-weight: 700; }
+.turno-opt.ocupado { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+.turno-badge { background: var(--verde-light); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--verde-dark); font-weight: 600; text-align: center; margin-top: 12px; display: none; }
+.btn-reservar { width: 100%; background: var(--verde); color: white; border: none; border-radius: 8px; padding: 15px; font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 800; cursor: pointer; margin-top: 1rem; transition: all 0.2s; display: block; text-align: center; text-decoration: none; letter-spacing: 0.5px; }
+.btn-reservar:hover { background: var(--verde-dark); transform: translateY(-1px); color: white; }
+.info-items { display: flex; flex-direction: column; gap: 14px; }
+.info-item { display: flex; gap: 12px; font-size: 13px; }
+.info-item .icon { font-size: 1.2rem; flex-shrink: 0; }
+.info-item strong { display: block; font-weight: 600; color: var(--texto); }
+.info-item span { color: var(--texto-muted); }
+.info-title { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.5px; }
+.info-title em { font-style: normal; color: var(--verde); }
+
+.comprar-wrap { background: linear-gradient(135deg, #0a0f0c, #1a3025); padding: 5rem 2rem; text-align: center; }
+.comprar-wrap h2 { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 0.5rem; letter-spacing: -0.5px; }
+.comprar-wrap p { color: rgba(255,255,255,0.7); font-size: 15px; margin-bottom: 0.75rem; }
+.comprar-precio { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--verde); margin-bottom: 1.5rem; display: block; }
+.btn-comprar-mp { background: var(--verde); color: white; border-radius: 12px; padding: 18px 40px; font-size: 16px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(45,122,79,0.4); margin-bottom: 1.5rem; transition: all 0.2s; }
+.btn-comprar-mp:hover { background: var(--verde-dark); transform: translateY(-2px); color: white; }
+.contact-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.contact-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 12px 24px; font-size: 13px; font-weight: 600; color: white; text-decoration: none; transition: all 0.2s; }
+.contact-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); color: white; }
+.comprar-nota { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+footer { background: #050a07; color: rgba(255,255,255,0.3); padding: 1.5rem; text-align: center; font-size: 12px; }
+footer span { color: var(--verde); }
+.alert { display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--verde); color: white; padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; z-index: 999; white-space: nowrap; }
+.reveal { opacity: 0; transform: translateY(24px); transition: all 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+@media(max-width:900px) { .hero-inner { grid-template-columns: 1fr; } .servicios-grid { grid-template-columns: 1fr; } .proceso-steps { grid-template-columns: repeat(2,1fr); } .reserva-grid { grid-template-columns: 1fr; } .nav-links { display: none; } .hero { padding: 7rem 1.5rem 3rem; } }
+</style>
+</head>
+<body>
+<div class="demo-badge">✦ PÁGINA DEMO</div>
+<div class="alert" id="alert"></div>
+<nav>
+  <div class="nav-logo">Fit<span>Pro</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#proceso">Método</a></li>
+    <li><a href="#reserva">Reservar</a></li>
+    <li><a href="#comprar">Quiero mi página</a></li>
+  </ul>
+  <a href="#reserva" class="nav-cta">Empezar ahora</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">🏋️ Entrenador Personal</div>
+      <h1>Tu mejor versión <em>empieza hoy</em></h1>
+      <p class="hero-sub">Entrenamiento personalizado, online o presencial. Planes adaptados a tus objetivos, tu cuerpo y tu estilo de vida.</p>
+      <div class="hero-btns">
+        <a href="#reserva" class="btn-primary">Empezar ahora</a>
+        <a href="#servicios" class="btn-outline">Ver planes</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-main-card">
+        <span class="hero-emoji">🏋️</span>
+        <div class="hero-name">Prof. Martín Vera</div>
+        <div class="hero-title">Entrenador Personal Certificado</div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">+5</span><span class="stat-label">Años exp.</span></div>
+        <div class="stat"><span class="stat-num">+150</span><span class="stat-label">Alumnos</span></div>
+        <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Resultados</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-wrap light" id="servicios">
+  <div class="section">
+    <span class="section-tag reveal">Planes de entrenamiento</span>
+    <h2 class="section-title reveal">Elegí tu <em>plan</em></h2>
+    <p class="section-sub reveal">Todos los planes incluyen seguimiento personalizado y ajuste mensual según tu evolución.</p>
+    <div class="servicios-grid">
+      <div class="serv-card reveal"><span class="serv-icon">🎯</span><div class="serv-nombre">Sesión individual</div><div class="serv-desc">Clase presencial personalizada de 60 minutos. Técnica, ejecución y progresión controlada.</div><div class="serv-precio">$8.000</div><div class="serv-duracion">⏱ 60 min · Presencial</div><a href="#reserva" class="serv-btn">Reservar</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">📅</span><div class="serv-nombre">Plan mensual 3x semana</div><div class="serv-desc">12 sesiones al mes. El plan más popular para resultados consistentes y duraderos.</div><div class="serv-precio">$35.000</div><div class="serv-duracion">⏱ 12 sesiones/mes</div><a href="#reserva" class="serv-btn">Reservar</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">💻</span><div class="serv-nombre">Entrenamiento online</div><div class="serv-desc">Plan de entrenamiento personalizado con seguimiento semanal por WhatsApp y videollamada.</div><div class="serv-precio">$20.000</div><div class="serv-duracion">⏱ Mensual · Online</div><a href="#reserva" class="serv-btn">Reservar</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">🥗</span><div class="serv-nombre">Plan + Nutrición</div><div class="serv-desc">Entrenamiento mensual más plan nutricional personalizado para potenciar tus resultados.</div><div class="serv-precio">$50.000</div><div class="serv-duracion">⏱ Mensual completo</div><a href="#reserva" class="serv-btn">Reservar</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">👥</span><div class="serv-nombre">Entrenamiento grupal</div><div class="serv-desc">Grupos reducidos de hasta 5 personas. Misma calidad de atención a menor costo.</div><div class="serv-precio">$15.000</div><div class="serv-duracion">⏱ Mensual · Grupo</div><a href="#reserva" class="serv-btn">Reservar</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">🏃</span><div class="serv-nombre">Evaluación física</div><div class="serv-desc">Análisis completo de composición corporal, postura y capacidades físicas iniciales.</div><div class="serv-precio">$5.000</div><div class="serv-duracion">⏱ 90 min · Primera vez</div><a href="#reserva" class="serv-btn">Reservar</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap dark" id="proceso">
+  <div class="section">
+    <span class="section-tag reveal">Mi método</span>
+    <h2 class="section-title white reveal">Cómo <em>trabajamos</em></h2>
+    <div class="proceso-steps">
+      <div class="paso reveal"><div class="paso-num">1</div><h4>Evaluación inicial</h4><p>Analizamos tu condición física, objetivos y disponibilidad horaria.</p></div>
+      <div class="paso reveal"><div class="paso-num">2</div><h4>Plan personalizado</h4><p>Diseñamos tu entrenamiento adaptado 100% a vos.</p></div>
+      <div class="paso reveal"><div class="paso-num">3</div><h4>Entrenás y mejorás</h4><p>Sesiones con seguimiento constante y corrección técnica.</p></div>
+      <div class="paso reveal"><div class="paso-num">4</div><h4>Medimos resultados</h4><p>Control mensual de progreso y ajuste del plan.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrap light" id="reserva">
+  <div class="section">
+    <div class="reserva-grid">
+      <div class="reserva-form reveal">
+        <h3>Reservá tu sesión</h3>
+        <p>Completá el formulario y empezamos juntos.</p>
+        <div class="fg"><label>Nombre completo</label><input type="text" id="r-nombre" placeholder="Tu nombre"></div>
+        <div class="fg"><label>WhatsApp</label><input type="tel" id="r-tel" placeholder="+54 385 000-0000"></div>
+        <div class="fg"><label>Email</label><input type="email" id="r-email" placeholder="tu@email.com"></div>
+        <div class="fg"><label>Plan</label>
+          <select id="r-servicio">
+            <option value="">Seleccioná un plan</option>
+            <option value="individual">Sesión individual — $8.000</option>
+            <option value="mensual">Plan mensual 3x semana — $35.000</option>
+            <option value="online">Entrenamiento online — $20.000</option>
+            <option value="nutricion">Plan + Nutrición — $50.000</option>
+            <option value="grupal">Entrenamiento grupal — $15.000</option>
+            <option value="evaluacion">Evaluación física — $5.000</option>
+          </select>
+        </div>
+        <div class="fg"><label>Fecha</label><input type="date" id="r-fecha" onchange="mostrarTurnos()"></div>
+        <div id="turnos-container" style="display:none;">
+          <label style="font-size:11px;font-weight:700;color:var(--texto-muted);display:block;margin-bottom:8px;text-transform:uppercase;">Horario</label>
+          <div class="turnos-grid">
+            <div class="turno-opt" onclick="selTurno(this,'07:00')">07:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'08:00')">08:00</div>
+            <div class="turno-opt ocupado">09:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'17:00')">17:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'18:00')">18:00</div>
+            <div class="turno-opt ocupado">19:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'20:00')">20:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'21:00')">21:00</div>
+          </div>
+        </div>
+        <div class="turno-badge" id="turno-badge">📅 Turno seleccionado</div>
+        <button class="btn-reservar" onclick="reservar()">Confirmar y pagar →</button>
+      </div>
+      <div class="reveal">
+        <div class="info-title">Entrenás con <em>resultados</em></div>
+        <p style="font-size:14px;color:var(--texto-muted);line-height:1.8;margin-bottom:1.5rem;">Cada plan está diseñado para que veas resultados reales. Sin excusas, sin relleno — puro entrenamiento efectivo.</p>
+        <div class="info-items">
+          <div class="info-item"><span class="icon">📍</span><div><strong>Ubicación</strong><span>Santiago del Estero Capital</span></div></div>
+          <div class="info-item"><span class="icon">🕐</span><div><strong>Horarios</strong><span>Lunes a Sábado · 7:00 a 21:00 hs</span></div></div>
+          <div class="info-item"><span class="icon">💳</span><div><strong>Pago</strong><span>Mercado Pago · Transferencia</span></div></div>
+          <div class="info-item"><span class="icon">💻</span><div><strong>Online disponible</strong><span>Para todo el país</span></div></div>
+          <div class="info-item"><span class="icon">📅</span><div><strong>Cancelaciones</strong><span>Con 24hs de anticipación</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="comprar-wrap" id="comprar">
+  <h2>¿Sos entrenador y querés tu propia página?</h2>
+  <p>Esta página puede ser tuya — personalizada con tu nombre, planes y precios.</p>
+  <span class="comprar-precio"><small style="font-size:1rem;opacity:0.7;font-family:'DM Sans',sans-serif;">Inversión única </small>$120.000</span>
+  <div style="margin-bottom:1.5rem;">
+    <a href="https://mpago.la/2kBtwce" class="btn-comprar-mp">💳 Comprá tu página ahora — $120.000</a>
+  </div>
+  <div class="contact-btns">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Vi%20la%20demo%20de%20entrenador%20y%20quiero%20mi%20pagina" class="contact-btn">💬 WhatsApp</a>
+    <a href="https://instagram.com/emiliocabania" class="contact-btn">📸 Instagram</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" class="contact-btn">📧 Email</a>
+  </div>
+  <p class="comprar-nota">✓ Entrega en 48hs · ✓ Reservas online · ✓ Pagos con Mercado Pago · ✓ Hosting gratuito</p>
+</div>
+
+<footer><span>FitPro</span> · Entrenador Personal · Santiago del Estero 🇦🇷</footer>
+
+<script>
+  const SHEET = 'https://script.google.com/macros/s/AKfycbxdMmh8BEIC7FCtKrkR2hdJtqbDwMb2MTF3cSEKnBMPm8Oi5OKzzIH3tjDeVAsmhTlC/exec';
+  let turnoSel = '';
+
+  function mostrarTurnos() {
+    const f = document.getElementById('r-fecha').value;
+    document.getElementById('turnos-container').style.display = f ? 'block' : 'none';
+    turnoSel = '';
+    document.getElementById('turno-badge').style.display = 'none';
+    document.querySelectorAll('.turno-opt').forEach(t => t.classList.remove('active'));
+  }
+
+  function selTurno(el, hora) {
+    if (el.classList.contains('ocupado')) return;
+    document.querySelectorAll('.turno-opt').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    turnoSel = hora;
+    const d = new Date(document.getElementById('r-fecha').value + 'T12:00:00');
+    const f = d.toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'long'});
+    const b = document.getElementById('turno-badge');
+    b.textContent = '📅 ' + f + ' a las ' + hora + ' hs';
+    b.style.display = 'block';
+  }
+
+  function reservar() {
+    const nombre = document.getElementById('r-nombre').value.trim();
+    const tel = document.getElementById('r-tel').value.trim();
+    const email = document.getElementById('r-email').value.trim();
+    const servicio = document.getElementById('r-servicio').value;
+    const fecha = document.getElementById('r-fecha').value;
+    if (!nombre) { showAlert('⚠️ Completá tu nombre'); return; }
+    if (!email) { showAlert('⚠️ Completá tu email'); return; }
+    if (!servicio) { showAlert('⚠️ Elegí un plan'); return; }
+    if (!fecha || !turnoSel) { showAlert('⚠️ Elegí fecha y horario'); return; }
+    const d = new Date(fecha + 'T12:00:00');
+    fetch(SHEET, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ nombre, telefono: tel, email, rubro: 'Entrenador Personal',
+        servicio, fecha: d.toLocaleDateString('es-AR'), turno: turnoSel,
+        metodoPago: 'Mercado Pago', estado: 'PENDIENTE ⏳' })
+    }).catch(()=>{});
+    showAlert('✓ ¡Turno reservado! Te contactamos pronto 🏋️');
+  }
+
+  function showAlert(msg) {
+    const a = document.getElementById('alert');
+    a.textContent = msg;
+    a.style.background = msg.includes('⚠️') ? '#c0392b' : 'var(--verde)';
+    a.style.display = 'block';
+    setTimeout(() => a.style.display = 'none', 4000);
+  }
+
+  document.getElementById('r-fecha').min = new Date().toISOString().split('T')[0];
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nail Studio Valentina — Manicura & Nail Art</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --rosa: #e8a0b4; --rosa-dark: #c4607e; --rosa-light: #fdf0f4;
+  --nude: #c9a98a; --nude-light: #faf5f0;
+  --texto: #2a1520; --texto-muted: #8a6070;
+  --borde: rgba(232,160,180,0.2); --fondo: #fdf8fa; --blanco: #ffffff;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--fondo); color: var(--texto); overflow-x: hidden; }
+
+/* DEMO BADGE */
+.demo-badge { position: fixed; top: 76px; left: 50%; transform: translateX(-50%); background: var(--nude); color: white; padding: 6px 20px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; z-index: 200; box-shadow: 0 4px 16px rgba(201,169,138,0.4); }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(253,248,250,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--borde); padding: 0 2rem; height: 68px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--texto); }
+.nav-logo span { color: var(--rosa-dark); font-style: italic; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 12px; font-weight: 500; color: var(--texto-muted); text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--rosa-dark); }
+.nav-cta { background: var(--rosa-dark); color: white; border: none; border-radius: 6px; padding: 10px 20px; font-size: 12px; font-weight: 600; cursor: pointer; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+.nav-cta:hover { background: #a04060; color: white; }
+
+/* HERO */
+.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; padding: 8rem 4rem 4rem; background: var(--blanco); position: relative; overflow: hidden; }
+.hero::after { content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: var(--rosa-light); clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%); z-index: 0; }
+.hero-content { position: relative; z-index: 1; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--rosa-dark); font-weight: 600; margin-bottom: 1.5rem; }
+.hero-tag::before { content: ''; width: 30px; height: 1px; background: var(--rosa-dark); }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem,4vw,3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+.hero h1 em { font-style: italic; color: var(--rosa-dark); }
+.hero-sub { font-size: 15px; color: var(--texto-muted); line-height: 1.8; max-width: 440px; margin-bottom: 2rem; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary { background: var(--rosa-dark); color: white; border: none; border-radius: 6px; padding: 14px 28px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-primary:hover { background: #a04060; transform: translateY(-2px); color: white; }
+.btn-secondary { background: transparent; color: var(--rosa-dark); border: 1.5px solid var(--rosa-dark); border-radius: 6px; padding: 14px 28px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-secondary:hover { background: var(--rosa-dark); color: white; transform: translateY(-2px); }
+.hero-visual { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1rem; }
+.hero-img { background: linear-gradient(135deg, #fce4ec, #f8bbd9); border-radius: 16px; height: 280px; display: flex; align-items: center; justify-content: center; font-size: 7rem; border: 1px solid var(--borde); }
+.hero-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+.hero-stat { background: var(--blanco); border: 1px solid var(--borde); border-radius: 10px; padding: 1rem; text-align: center; }
+.hero-stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--rosa-dark); display: block; }
+.hero-stat-label { font-size: 11px; color: var(--texto-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* SERVICIOS */
+.servicios-wrap { background: var(--rosa-light); padding: 6rem 2rem; }
+.servicios { max-width: 1100px; margin: 0 auto; }
+.section-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--rosa-dark); font-weight: 600; margin-bottom: 0.75rem; display: block; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,4vw,2.8rem); font-weight: 700; margin-bottom: 0.5rem; }
+.section-title em { font-style: italic; color: var(--rosa-dark); }
+.section-sub { font-size: 14px; color: var(--texto-muted); margin-bottom: 3rem; max-width: 500px; line-height: 1.7; }
+.servicios-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.serv-card { background: var(--blanco); border-radius: 14px; border: 1px solid var(--borde); padding: 1.75rem; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
+.serv-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--rosa-dark); transform: scaleX(0); transition: transform 0.3s; transform-origin: left; }
+.serv-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(232,160,180,0.2); }
+.serv-card:hover::before { transform: scaleX(1); }
+.serv-icon { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+.serv-nombre { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+.serv-desc { font-size: 12px; color: var(--texto-muted); line-height: 1.6; margin-bottom: 0.75rem; }
+.serv-precio { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--rosa-dark); }
+.serv-duracion { font-size: 11px; color: var(--texto-muted); }
+.serv-btn { display: block; width: 100%; background: var(--rosa-light); color: var(--rosa-dark); border: none; border-radius: 6px; padding: 9px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin-top: 1rem; text-decoration: none; transition: all 0.2s; text-align: center; }
+.serv-btn:hover { background: var(--rosa-dark); color: white; }
+
+/* GALERÍA */
+.galeria-wrap { background: var(--blanco); padding: 6rem 2rem; }
+.galeria { max-width: 1100px; margin: 0 auto; }
+.galeria-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 3rem; }
+.gal-item { border-radius: 12px; overflow: hidden; aspect-ratio: 1; background: linear-gradient(135deg, #fce4ec, #f8bbd9); display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 1px solid var(--borde); transition: transform 0.2s; cursor: pointer; }
+.gal-item:hover { transform: scale(1.03); }
+
+/* PROCESO */
+.proceso-wrap { background: var(--rosa-light); padding: 5rem 2rem; }
+.proceso { max-width: 900px; margin: 0 auto; text-align: center; }
+.proceso-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-top: 3rem; position: relative; }
+.proceso-steps::before { content: ''; position: absolute; top: 26px; left: 15%; right: 15%; height: 1px; background: linear-gradient(to right, var(--borde), var(--rosa-dark), var(--borde)); }
+.paso { text-align: center; }
+.paso-num { width: 52px; height: 52px; border-radius: 50%; background: var(--rosa-dark); color: white; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+.paso h4 { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+.paso p { font-size: 12px; color: var(--texto-muted); line-height: 1.6; }
+
+/* RESERVA */
+.reserva-wrap { background: var(--blanco); padding: 6rem 2rem; }
+.reserva { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.reserva-form { background: var(--rosa-light); border-radius: 16px; padding: 2.5rem; border: 1px solid var(--borde); }
+.reserva-form h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.25rem; }
+.reserva-form p { font-size: 13px; color: var(--texto-muted); margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--borde); }
+.fg { margin-bottom: 14px; }
+.fg label { display: block; font-size: 11px; font-weight: 700; color: var(--texto-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+.fg input, .fg select { width: 100%; border: 1.5px solid var(--borde); border-radius: 8px; padding: 11px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--texto); background: var(--blanco); outline: none; transition: border-color 0.15s; }
+.fg input:focus, .fg select:focus { border-color: var(--rosa-dark); box-shadow: 0 0 0 3px rgba(196,96,126,0.1); }
+.turnos-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.turno-opt { border: 1.5px solid var(--borde); border-radius: 8px; padding: 9px 6px; cursor: pointer; text-align: center; font-size: 13px; font-weight: 500; color: var(--texto-muted); transition: all 0.15s; background: var(--blanco); }
+.turno-opt:hover { border-color: var(--rosa-dark); color: var(--rosa-dark); background: var(--rosa-light); }
+.turno-opt.active { border-color: var(--rosa-dark); background: var(--rosa-light); color: var(--rosa-dark); font-weight: 700; }
+.turno-opt.ocupado { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+.turno-badge { background: var(--rosa-light); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--rosa-dark); font-weight: 600; text-align: center; margin-top: 12px; display: none; }
+.btn-reservar { width: 100%; background: var(--rosa-dark); color: white; border: none; border-radius: 8px; padding: 15px; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 1rem; transition: all 0.2s; display: block; text-align: center; text-decoration: none; }
+.btn-reservar:hover { background: #a04060; transform: translateY(-1px); color: white; }
+.reserva-info h3 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.2; }
+.reserva-info h3 em { font-style: italic; color: var(--rosa-dark); }
+.reserva-info p { font-size: 14px; color: var(--texto-muted); line-height: 1.8; margin-bottom: 1.5rem; }
+.info-items { display: flex; flex-direction: column; gap: 14px; }
+.info-item { display: flex; gap: 12px; font-size: 13px; }
+.info-item .icon { font-size: 1.2rem; flex-shrink: 0; }
+.info-item strong { display: block; font-weight: 600; color: var(--texto); }
+.info-item span { color: var(--texto-muted); }
+
+/* CTA COMPRAR */
+.comprar-wrap { background: linear-gradient(135deg, var(--rosa-dark), #a04060); padding: 5rem 2rem; text-align: center; }
+.comprar-wrap h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,4vw,3rem); font-weight: 700; color: white; margin-bottom: 0.5rem; }
+.comprar-wrap h2 em { font-style: italic; color: #fce4ec; }
+.comprar-wrap p { color: rgba(255,255,255,0.8); font-size: 15px; margin-bottom: 0.5rem; }
+.comprar-precio { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 2rem; display: block; }
+.comprar-precio small { font-size: 1rem; opacity: 0.8; font-family: 'DM Sans', sans-serif; }
+.comprar-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.btn-comprar { display: flex; align-items: center; gap: 8px; background: white; color: var(--rosa-dark); border: none; border-radius: 10px; padding: 14px 28px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+.btn-comprar:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); color: var(--rosa-dark); }
+.comprar-nota { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+/* CONTACTO */
+.contacto-wrap { background: var(--texto); padding: 3rem 2rem; text-align: center; }
+.contacto-wrap h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: white; margin-bottom: 0.5rem; }
+.contacto-wrap p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 1.5rem; }
+.contact-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.contact-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; color: white; text-decoration: none; transition: all 0.2s; }
+.contact-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); color: white; }
+
+footer { background: #1a0a10; color: rgba(255,255,255,0.3); padding: 1.5rem; text-align: center; font-size: 12px; }
+footer span { color: var(--rosa); }
+
+.alert { display: none; position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--rosa-dark); color: white; padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; z-index: 999; white-space: nowrap; }
+.reveal { opacity: 0; transform: translateY(24px); transition: all 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media(max-width:900px) {
+  .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+  .hero::after { display: none; }
+  .servicios-grid { grid-template-columns: 1fr; }
+  .galeria-grid { grid-template-columns: repeat(2,1fr); }
+  .proceso-steps { grid-template-columns: repeat(2,1fr); }
+  .proceso-steps::before { display: none; }
+  .reserva { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-badge">✦ PÁGINA DEMO</div>
+<div class="alert" id="alert"></div>
+
+<nav>
+  <div class="nav-logo">Nail <span>Studio</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#reserva">Reservar</a></li>
+    <li><a href="#comprar">Quiero mi página</a></li>
+  </ul>
+  <a href="#reserva" class="nav-cta">Reservar turno</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">💅 Manicura & Nail Art</div>
+    <h1>Tus uñas merecen lo <em>mejor</em></h1>
+    <p class="hero-sub">Manicura tradicional, semipermanente, acrílicas y nail art personalizado. Diseños únicos para cada ocasión.</p>
+    <div class="hero-btns">
+      <a href="#reserva" class="btn-primary">Reservar turno</a>
+      <a href="#servicios" class="btn-secondary">Ver servicios</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img">💅</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num">+3</span><span class="hero-stat-label">Años de experiencia</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">+500</span><span class="hero-stat-label">Clientas felices</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">100%</span><span class="hero-stat-label">Productos premium</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<div class="servicios-wrap" id="servicios">
+  <div class="servicios">
+    <span class="section-tag reveal">Nuestros servicios</span>
+    <h2 class="section-title reveal">Todo para tus <em>uñas</em></h2>
+    <p class="section-sub reveal">Usamos productos de primera calidad para un resultado perfecto y duradero.</p>
+    <div class="servicios-grid">
+      <div class="serv-card reveal">
+        <span class="serv-icon">✨</span>
+        <div class="serv-nombre">Manicura tradicional</div>
+        <div class="serv-desc">Limpieza, cutículas, limado y esmaltado clásico con colores a elección.</div>
+        <div class="serv-precio">$8.000</div>
+        <div class="serv-duracion">⏱ 45 minutos</div>
+        <a href="#reserva" class="serv-btn">Reservar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">💎</span>
+        <div class="serv-nombre">Semipermanente</div>
+        <div class="serv-desc">Esmalte semipermanente de larga duración. Hasta 3 semanas sin astillarse.</div>
+        <div class="serv-precio">$15.000</div>
+        <div class="serv-duracion">⏱ 60 minutos</div>
+        <a href="#reserva" class="serv-btn">Reservar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">🌸</span>
+        <div class="serv-nombre">Acrílicas</div>
+        <div class="serv-desc">Uñas acrílicas con extensión. Forma personalizada y durabilidad garantizada.</div>
+        <div class="serv-precio">$25.000</div>
+        <div class="serv-duracion">⏱ 90 minutos</div>
+        <a href="#reserva" class="serv-btn">Reservar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">🎨</span>
+        <div class="serv-nombre">Nail Art</div>
+        <div class="serv-desc">Diseños personalizados, francesas, degradés, piedras, stickers y más.</div>
+        <div class="serv-precio">$5.000</div>
+        <div class="serv-duracion">⏱ 30 min adicionales</div>
+        <a href="#reserva" class="serv-btn">Reservar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">🦶</span>
+        <div class="serv-nombre">Pedicura completa</div>
+        <div class="serv-desc">Baño de pies, cutículas, limado y esmaltado. Con masaje incluido.</div>
+        <div class="serv-precio">$12.000</div>
+        <div class="serv-duracion">⏱ 60 minutos</div>
+        <a href="#reserva" class="serv-btn">Reservar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">👰</span>
+        <div class="serv-nombre">Paquete novia</div>
+        <div class="serv-desc">Manicura + pedicura completa + nail art especial para el día más importante.</div>
+        <div class="serv-precio">$45.000</div>
+        <div class="serv-duracion">⏱ 3 horas</div>
+        <a href="#reserva" class="serv-btn">Reservar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="galeria-wrap" id="galeria">
+  <div class="galeria">
+    <span class="section-tag reveal">Galería</span>
+    <h2 class="section-title reveal">Nuestros <em>trabajos</em></h2>
+    <p class="section-sub reveal">Cada set de uñas es único. Estos son algunos de nuestros diseños favoritos.</p>
+    <div class="galeria-grid">
+      <div class="gal-item reveal">💅</div>
+      <div class="gal-item reveal">🌸</div>
+      <div class="gal-item reveal">💎</div>
+      <div class="gal-item reveal">🎨</div>
+      <div class="gal-item reveal">✨</div>
+      <div class="gal-item reveal">🌺</div>
+      <div class="gal-item reveal">💖</div>
+      <div class="gal-item reveal">🦋</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESO -->
+<div class="proceso-wrap">
+  <div class="proceso">
+    <span class="section-tag reveal">Cómo funciona</span>
+    <h2 class="section-title reveal">Tu turno en <em>4 pasos</em></h2>
+    <div class="proceso-steps">
+      <div class="paso reveal"><div class="paso-num">1</div><h4>Elegís el servicio</h4><p>Seleccioná manicura, semipermanente, acrílicas o nail art.</p></div>
+      <div class="paso reveal"><div class="paso-num">2</div><h4>Reservás online</h4><p>Elegís fecha, horario y pagás de forma segura con Mercado Pago.</p></div>
+      <div class="paso reveal"><div class="paso-num">3</div><h4>Venís al estudio</h4><p>Te esperamos con todo listo para que disfrutes la experiencia.</p></div>
+      <div class="paso reveal"><div class="paso-num">4</div><h4>Salís perfecta</h4><p>Uñas impecables con diseño único listas para lucir.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- RESERVA -->
+<div class="reserva-wrap" id="reserva">
+  <div class="reserva">
+    <div class="reserva-form reveal">
+      <h3>Reservá tu turno</h3>
+      <p>Completá el formulario y pagá online de forma segura.</p>
+      <div class="fg"><label>Nombre completo</label><input type="text" id="r-nombre" placeholder="Tu nombre"></div>
+      <div class="fg"><label>WhatsApp</label><input type="tel" id="r-tel" placeholder="+54 385 000-0000"></div>
+      <div class="fg"><label>Email</label><input type="email" id="r-email" placeholder="tu@email.com"></div>
+      <div class="fg">
+        <label>Servicio</label>
+        <select id="r-servicio">
+          <option value="">Seleccioná un servicio</option>
+          <option value="tradicional">Manicura tradicional — $8.000</option>
+          <option value="semi">Semipermanente — $15.000</option>
+          <option value="acrilicas">Acrílicas — $25.000</option>
+          <option value="nailart">Nail Art — $5.000 adicional</option>
+          <option value="pedicura">Pedicura completa — $12.000</option>
+          <option value="novia">Paquete novia — $45.000</option>
+        </select>
+      </div>
+      <div class="fg"><label>Fecha</label><input type="date" id="r-fecha" onchange="mostrarTurnos()"></div>
+      <div id="turnos-container" style="display:none;">
+        <label style="font-size:11px;font-weight:700;color:var(--texto-muted);display:block;margin-bottom:8px;text-transform:uppercase;">Horario</label>
+        <div class="turnos-grid">
+          <div class="turno-opt" onclick="selTurno(this,'09:00')">09:00</div>
+          <div class="turno-opt" onclick="selTurno(this,'10:00')">10:00</div>
+          <div class="turno-opt ocupado">11:00</div>
+          <div class="turno-opt" onclick="selTurno(this,'14:00')">14:00</div>
+          <div class="turno-opt" onclick="selTurno(this,'15:00')">15:00</div>
+          <div class="turno-opt ocupado">16:00</div>
+          <div class="turno-opt" onclick="selTurno(this,'17:00')">17:00</div>
+          <div class="turno-opt" onclick="selTurno(this,'18:00')">18:00</div>
+          <div class="turno-opt" onclick="selTurno(this,'19:00')">19:00</div>
+        </div>
+      </div>
+      <div class="turno-badge" id="turno-badge">📅 Turno seleccionado</div>
+      <button class="btn-reservar" onclick="reservar()">Confirmar y pagar con MP →</button>
+    </div>
+    <div class="reserva-info reveal">
+      <h3>Tu experiencia <em>perfecta</em></h3>
+      <p>Cada visita es un momento para vos. Te esperamos en un espacio cómodo, limpio y con productos de primera calidad.</p>
+      <div class="info-items">
+        <div class="info-item"><span class="icon">📍</span><div><strong>Ubicación</strong><span>Santiago del Estero Capital</span></div></div>
+        <div class="info-item"><span class="icon">🕐</span><div><strong>Horarios</strong><span>Lunes a Sábado · 9:00 a 19:00 hs</span></div></div>
+        <div class="info-item"><span class="icon">💳</span><div><strong>Pago seguro</strong><span>Mercado Pago · Tarjeta · Efectivo</span></div></div>
+        <div class="info-item"><span class="icon">✨</span><div><strong>Productos premium</strong><span>Marcas de primera calidad</span></div></div>
+        <div class="info-item"><span class="icon">📅</span><div><strong>Cancelaciones</strong><span>Avisar con 24hs de anticipación</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA COMPRAR -->
+<div class="comprar-wrap" id="comprar">
+  <h2>¿Tenés un <em>negocio de uñas?</em></h2>
+  <p>Esta página puede ser tuya — personalizada con tu nombre, servicios y precios.</p>
+  <span class="comprar-precio"><small>Inversión única </small>$120.000</span>
+  <div style="margin-bottom:1.5rem;">
+    <a href="https://mpago.la/2kBtwce" class="btn-comprar" style="background:var(--rosa-dark);color:white;font-size:16px;padding:18px 40px;border-radius:12px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+      💳 Comprá tu página ahora — $120.000
+    </a>
+  </div>
+  <div class="comprar-btns">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Vi%20la%20demo%20de%20manicura%20y%20quiero%20mi%20p%C3%A1gina" class="btn-comprar">💬 WhatsApp</a>
+    <a href="https://instagram.com/emiliocabania" class="btn-comprar">📸 Instagram</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" class="btn-comprar">📧 Email</a>
+  </div>
+  <p class="comprar-nota">✓ Entrega en 48hs · ✓ Reservas online · ✓ Pagos con Mercado Pago · ✓ Hosting gratuito</p>
+</div>
+
+<!-- CONTACTO -->
+<div class="contacto-wrap">
+  <h2>¿Hablamos?</h2>
+  <p>Reservas, consultas y turnos — estamos para ayudarte</p>
+  <div class="contact-btns">
+    <a href="https://wa.me/5490000000000" class="contact-btn">💬 WhatsApp</a>
+    <a href="https://instagram.com/nailstudio" class="contact-btn">📸 Instagram</a>
+    <a href="#reserva" class="contact-btn">📅 Reservar turno</a>
+  </div>
+</div>
+
+<footer>
+  <span>Nail Studio</span> · Manicura & Nail Art · Santiago del Estero 🇦🇷
+</footer>
+
+<script>
+  let turnoSel = '';
+
+  function mostrarTurnos() {
+    const f = document.getElementById('r-fecha').value;
+    document.getElementById('turnos-container').style.display = f ? 'block' : 'none';
+    turnoSel = '';
+    document.getElementById('turno-badge').style.display = 'none';
+    document.querySelectorAll('.turno-opt').forEach(t => t.classList.remove('active'));
+  }
+
+  function selTurno(el, hora) {
+    if (el.classList.contains('ocupado')) return;
+    document.querySelectorAll('.turno-opt').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    turnoSel = hora;
+    const d = new Date(document.getElementById('r-fecha').value + 'T12:00:00');
+    const f = d.toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'long'});
+    const b = document.getElementById('turno-badge');
+    b.textContent = '📅 ' + f + ' a las ' + hora + ' hs';
+    b.style.display = 'block';
+  }
+
+  const SHEET = 'https://script.google.com/macros/s/AKfycbxdMmh8BEIC7FCtKrkR2hdJtqbDwMb2MTF3cSEKnBMPm8Oi5OKzzIH3tjDeVAsmhTlC/exec';
+  function reservar() {
+    const nombre = document.getElementById('r-nombre').value.trim();
+    const tel = document.getElementById('r-tel').value.trim();
+    const email = document.getElementById('r-email').value.trim();
+    const servicio = document.getElementById('r-servicio').value;
+    const fecha = document.getElementById('r-fecha').value;
+    if (!nombre) { showAlert('⚠️ Completá tu nombre'); return; }
+    if (!email) { showAlert('⚠️ Completá tu email'); return; }
+    if (!servicio) { showAlert('⚠️ Elegí un servicio'); return; }
+    if (!fecha || !turnoSel) { showAlert('⚠️ Elegí fecha y horario'); return; }
+    const d = new Date(fecha + 'T12:00:00');
+    fetch(SHEET, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ nombre, telefono: tel, email, rubro: 'Manicura / Nail Art',
+        servicio, fecha: d.toLocaleDateString('es-AR'), turno: turnoSel,
+        metodoPago: 'Mercado Pago', estado: 'PENDIENTE ⏳' })
+    }).catch(()=>{});
+    showAlert('✓ ¡Turno reservado! Te esperamos 💅');
+  }
+
+  function showAlert(msg) {
+    const a = document.getElementById('alert');
+    a.textContent = msg;
+    a.style.background = msg.includes('⚠️') ? '#c0392b' : 'var(--rosa-dark)';
+    a.style.display = 'block';
+    setTimeout(() => a.style.display = 'none', 4000);
+  }
+
+  document.getElementById('r-fecha').min = new Date().toISOString().split('T')[0];
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
