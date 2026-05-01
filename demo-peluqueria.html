@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corte Libre — Reservá tu turno — Corte Libre</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --rosa: #c9847a; --rosa-dark: #a86960; --rosa-light: #f9ede9;
+    --azul: #2c5f8a; --azul-dark: #1a4466; --azul-light: #e8f2f9;
+    --dorado: #c9a96e; --dorado-light: #faf5ec;
+    --texto: #1e1e2e; --texto-muted: #6b7280;
+    --borde: #e5e7eb; --fondo: #f7f8fc; --blanco: #ffffff;
+    --success: #7aad8c; --acento: var(--rosa);
+  }
+  body { font-family: "DM Sans", sans-serif; background: var(--fondo); color: var(--texto); min-height: 100vh; }
+
+  header {
+    background: var(--blanco); border-bottom: 1px solid var(--borde);
+    padding: 0 2rem; height: 68px; display: flex; align-items: center;
+    justify-content: space-between; position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-family: "Playfair Display", serif; font-size: 1.5rem; font-weight: 700; color: var(--texto); }
+  .logo span { color: var(--rosa); }
+  .ssl-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--texto-muted); }
+
+  .hero {
+    background: linear-gradient(135deg, #1e1e2e 0%, #2d1f3d 50%, #1a2535 100%);
+    padding: 3rem 2rem; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before { content:""; position:absolute; top:-60px; right:-60px; width:260px; height:260px; background:rgba(201,132,122,0.12); border-radius:50%; }
+  .hero::after { content:""; position:absolute; bottom:-80px; left:-40px; width:200px; height:200px; background:rgba(44,95,138,0.10); border-radius:50%; }
+  .hero h1 { font-family:"Playfair Display",serif; font-size:2rem; color:#fff; font-weight:700; margin-bottom:0.5rem; position:relative; z-index:1; }
+  .hero p { color:rgba(255,255,255,0.6); font-size:14px; position:relative; z-index:1; max-width:420px; margin:0 auto; line-height:1.6; }
+
+  .servicios-section { max-width:960px; margin:0 auto; padding:2rem 1.5rem 0; }
+  .servicios-titulo { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:700; margin-bottom:1rem; }
+  .servicios-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; }
+  .servicio-card { background:var(--blanco); border:2px solid var(--borde); border-radius:18px; padding:1.5rem; cursor:pointer; transition:all 0.2s; text-align:center; position:relative; }
+  .servicio-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+  .servicio-card.active-dama { border-color:var(--rosa); background:var(--rosa-light); }
+  .servicio-card.active-caballero { border-color:var(--azul); background:var(--azul-light); }
+  .servicio-card .sc-emoji { font-size:3rem; display:block; margin-bottom:0.75rem; }
+  .servicio-card .sc-nombre { font-family:"Playfair Display",serif; font-size:1rem; font-weight:700; margin-bottom:4px; }
+  .servicio-card .sc-desc { font-size:12px; color:var(--texto-muted); margin-bottom:0.75rem; }
+  .servicio-card .sc-precio { font-family:"Playfair Display",serif; font-size:1.4rem; font-weight:700; }
+  .servicio-card.active-dama .sc-precio { color:var(--rosa-dark); }
+  .servicio-card.active-caballero .sc-precio { color:var(--azul-dark); }
+  .sc-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:5px; margin-top:0.75rem; }
+  .sc-tag { font-size:11px; border-radius:20px; padding:3px 10px; }
+  .sc-tag-dama { background:#f3d9d6; color:var(--rosa-dark); }
+  .sc-tag-caballero { background:#d6e8f3; color:var(--azul-dark); }
+  .selected-badge { position:absolute; top:12px; right:12px; background:var(--rosa); color:white; font-size:10px; font-weight:700; border-radius:20px; padding:3px 10px; display:none; }
+  .servicio-card.active-dama .selected-badge { display:block; background:var(--rosa); }
+  .servicio-card.active-caballero .selected-badge { display:block; background:var(--azul); }
+
+  main { max-width:960px; margin:0 auto; padding:0 1.5rem 4rem; display:grid; grid-template-columns:1fr 360px; gap:2rem; align-items:start; }
+  .card { background:var(--blanco); border-radius:18px; border:1px solid var(--borde); padding:1.5rem; margin-bottom:1.25rem; }
+  .section-num { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; background:var(--acento); color:#fff; border-radius:50%; font-size:12px; font-weight:600; margin-right:10px; flex-shrink:0; transition:background 0.3s; }
+  .section-title { font-family:"Playfair Display",serif; font-size:1.05rem; font-weight:600; display:flex; align-items:center; margin-bottom:1.25rem; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  .form-group { margin-bottom:12px; }
+  .form-group label { display:block; font-size:12px; font-weight:500; color:var(--texto-muted); margin-bottom:5px; }
+  .form-group input, .form-group select { width:100%; border:1.5px solid var(--borde); border-radius:10px; padding:11px 14px; font-size:14px; font-family:"DM Sans",sans-serif; color:var(--texto); background:var(--blanco); transition:border-color 0.15s; outline:none; }
+  .form-group input:focus { border-color:var(--acento); box-shadow:0 0 0 3px rgba(201,132,122,0.12); }
+  .form-group input::placeholder { color:#c4c4c4; }
+
+  .turnos-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:4px; }
+  .turno-opt { border:1.5px solid var(--borde); border-radius:10px; padding:10px 6px; cursor:pointer; text-align:center; transition:all 0.15s; font-size:13px; font-weight:500; color:var(--texto-muted); }
+  .turno-opt:hover { border-color:var(--acento); color:var(--acento); }
+  .turno-opt.active { border-color:var(--acento); background:var(--rosa-light); color:var(--rosa-dark); font-weight:600; }
+  .turno-opt.ocupado { opacity:0.4; cursor:not-allowed; text-decoration:line-through; }
+
+  .mp-pay-box { background:linear-gradient(135deg,#e8f6fd 0%,#f0faff 100%); border:1.5px solid #b3dff5; border-radius:14px; padding:1.5rem; text-align:center; }
+  .mp-pay-box h3 { font-family:"Playfair Display",serif; font-size:1.1rem; color:#0076B1; margin-bottom:0.5rem; }
+  .mp-pay-box p { font-size:12px; color:#4a7a9b; margin-bottom:1.25rem; line-height:1.6; }
+  .btn-mp { display:block; width:100%; background:#009EE3; color:white; border:none; border-radius:12px; padding:16px; font-family:"DM Sans",sans-serif; font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; transition:background 0.15s,transform 0.12s; text-align:center; margin-bottom:8px; }
+  .btn-mp:hover { background:#0076B1; transform:translateY(-1px); color:white; }
+  .nota-box { background:var(--dorado-light); border:1px solid #e8d5a3; border-radius:10px; padding:10px 14px; font-size:12px; color:#7a6030; line-height:1.5; margin-bottom:12px; }
+  .sin-servicio { background:#fff8e1; border:1px solid #ffe082; border-radius:10px; padding:10px 14px; font-size:13px; color:#7a6000; text-align:center; margin-bottom:12px; display:none; }
+
+  .summary-card { background:var(--blanco); border-radius:18px; border:1px solid var(--borde); padding:1.5rem; position:sticky; top:84px; }
+  .summary-title { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:700; margin-bottom:1.25rem; }
+  .servicio-img { width:100%; height:160px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid var(--borde); position:relative; overflow:hidden; transition:background 0.3s; }
+  .img-emoji { font-size:4rem; position:relative; z-index:1; }
+  .img-deco { position:absolute; font-size:1.5rem; opacity:0.2; }
+  .img-deco.d1 { top:10px; left:14px; } .img-deco.d2 { bottom:10px; right:14px; } .img-deco.d3 { top:10px; right:50px; }
+  .servicio-nombre { font-family:"Playfair Display",serif; font-size:1.05rem; font-weight:700; margin-bottom:4px; }
+  .servicio-desc { font-size:12px; color:var(--texto-muted); margin-bottom:1rem; line-height:1.5; }
+  .divider { border:none; border-top:1px solid var(--borde); margin:1rem 0; }
+  .summary-row { display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px; color:var(--texto-muted); }
+  .summary-row span:last-child { color:var(--texto); font-weight:500; }
+  .summary-total { display:flex; justify-content:space-between; font-family:"Playfair Display",serif; font-size:1.2rem; font-weight:700; margin-top:4px; }
+  .turno-seleccionado { background:var(--rosa-light); border-radius:10px; padding:10px 14px; font-size:13px; color:var(--rosa-dark); font-weight:500; text-align:center; margin-top:12px; display:none; }
+  .btn-reservar { display:block; width:100%; background:var(--rosa); color:white; border:none; border-radius:12px; padding:16px; font-family:"Playfair Display",serif; font-size:1rem; font-weight:700; cursor:pointer; margin-top:1.25rem; transition:background 0.15s,transform 0.12s; text-align:center; text-decoration:none; }
+  .btn-reservar:hover { background:var(--rosa-dark); transform:translateY(-1px); color:white; }
+  .seguridad { display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:var(--texto-muted); margin-top:10px; }
+  .security-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:1rem; }
+  .sec-tag { font-size:11px; background:var(--fondo); border:1px solid var(--borde); border-radius:20px; padding:4px 10px; color:var(--texto-muted); }
+  .alert-success { display:none; position:fixed; top:80px; left:50%; transform:translateX(-50%); background:var(--success); color:white; padding:12px 28px; border-radius:12px; font-weight:600; font-size:14px; z-index:999; box-shadow:0 8px 24px rgba(122,173,140,0.4); white-space:nowrap; }
+
+  @media(max-width:768px){ main{grid-template-columns:1fr;} .summary-card{position:static;} .turnos-grid{grid-template-columns:repeat(3,1fr);} }
+
+  /* MAPA */
+  .mapa-section { background:var(--blanco); border-top:1px solid var(--borde); padding:2rem 1.5rem; max-width:960px; margin:0 auto; }
+  .mapa-section h3 { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:700; margin-bottom:0.25rem; }
+  .mapa-section p { font-size:13px; color:var(--texto-muted); margin-bottom:1rem; }
+  .mapa-btn { display:flex; align-items:center; justify-content:center; gap:10px; background:linear-gradient(135deg,#e8f4f8,#d4eaf5); border-radius:14px; padding:1.5rem; text-decoration:none; transition:opacity 0.2s; border:1px solid var(--borde); }
+  .mapa-btn:hover { opacity:0.85; }
+  .mapa-btn-text { text-align:center; }
+  .mapa-btn-text strong { display:block; color:#1a4466; font-size:14px; }
+  .mapa-btn-text span { font-size:12px; color:#4a7a9b; }
+  .mapa-pill { background:#2c5f8a; color:white; border-radius:20px; padding:6px 18px; font-size:12px; font-weight:600; margin-top:8px; display:inline-block; }
+  .horarios-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:1rem; }
+  .horario-item { background:var(--fondo); border-radius:10px; padding:10px 14px; font-size:12px; }
+  .horario-dia { font-weight:700; color:var(--texto); margin-bottom:3px; }
+  .horario-hrs { color:var(--texto-muted); line-height:1.5; }
+
+  /* CHATBOT */
+  .chat-fab { position:fixed; bottom:24px; right:24px; z-index:500; width:56px; height:56px; border-radius:50%; background:var(--rosa); color:white; border:none; font-size:1.4rem; cursor:pointer; box-shadow:0 4px 20px rgba(201,132,122,0.5); transition:transform 0.2s; display:flex; align-items:center; justify-content:center; }
+  .chat-fab:hover { transform:scale(1.1); }
+  .chat-notif { position:absolute; top:0; right:0; width:16px; height:16px; background:#e83e3e; border-radius:50%; border:2px solid white; font-size:9px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; }
+  .chat-box { position:fixed; bottom:92px; right:24px; z-index:500; width:310px; background:white; border-radius:16px; box-shadow:0 8px 40px rgba(0,0,0,0.15); display:none; flex-direction:column; overflow:hidden; max-height:460px; border:1px solid var(--borde); }
+  .chat-box.open { display:flex; animation:chatIn 0.25s ease; }
+  @keyframes chatIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .chat-head { background:var(--rosa); color:white; padding:12px 14px; display:flex; align-items:center; gap:10px; }
+  .chat-head-av { width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:1rem; }
+  .chat-head-info { flex:1; }
+  .chat-head-name { font-weight:700; font-size:13px; }
+  .chat-head-status { font-size:10px; opacity:0.85; }
+  .chat-head-close { background:none; border:none; color:white; font-size:1.2rem; cursor:pointer; opacity:0.8; padding:0; }
+  .chat-msgs { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; background:#f8f8f8; }
+  .cmsg { max-width:85%; }
+  .cmsg.bot { align-self:flex-start; }
+  .cmsg.user { align-self:flex-end; }
+  .cmsg-bubble { padding:8px 12px; border-radius:12px; font-size:13px; line-height:1.5; }
+  .cmsg.bot .cmsg-bubble { background:white; color:var(--texto); border:1px solid var(--borde); border-radius:2px 12px 12px 12px; }
+  .cmsg.user .cmsg-bubble { background:var(--rosa); color:white; border-radius:12px 2px 12px 12px; }
+  .chat-chips { display:flex; flex-wrap:wrap; gap:5px; padding:6px 12px 8px; background:#f8f8f8; }
+  .chat-chip { background:white; border:1.5px solid var(--rosa); color:var(--rosa); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; font-family:"DM Sans",sans-serif; transition:all 0.15s; }
+  .chat-chip:hover { background:var(--rosa); color:white; }
+  .chat-input-row { display:flex; gap:6px; padding:8px 10px; border-top:1px solid var(--borde); background:white; }
+  .chat-input { flex:1; border:1.5px solid var(--borde); border-radius:20px; padding:7px 12px; font-size:13px; font-family:"DM Sans",sans-serif; outline:none; }
+  .chat-input:focus { border-color:var(--rosa); }
+  .chat-send { background:var(--rosa); color:white; border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:0.9rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .chat-send:hover { background:var(--rosa-dark); }
+
+
+  /* MAPA */
+  .mapa-section { background:var(--blanco); border-top:1px solid var(--borde); padding:2rem 1.5rem; max-width:960px; margin:0 auto; }
+  .mapa-section h3 { font-family:"Playfair Display",serif; font-size:1.1rem; font-weight:700; margin-bottom:0.25rem; }
+  .mapa-section p { font-size:13px; color:var(--texto-muted); margin-bottom:1rem; }
+  .mapa-btn { display:flex; align-items:center; justify-content:center; gap:10px; background:linear-gradient(135deg,#e8f4f8,#d4eaf5); border-radius:14px; padding:1.5rem; text-decoration:none; transition:opacity 0.2s; border:1px solid var(--borde); }
+  .mapa-btn:hover { opacity:0.85; }
+  .mapa-btn-text { text-align:center; }
+  .mapa-btn-title { font-weight:700; color:#1a4466; font-size:14px; display:block; }
+  .mapa-btn-sub { font-size:12px; color:#4a7a9b; }
+  .mapa-badge { background:#2c5f8a; color:white; border-radius:20px; padding:6px 18px; font-size:12px; font-weight:600; margin-top:8px; display:inline-block; }
+  .horarios-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:1rem; }
+  .horario-item { background:var(--fondo); border-radius:10px; padding:10px 14px; font-size:12px; border:1px solid var(--borde); }
+  .horario-dia { font-weight:700; color:var(--texto); margin-bottom:3px; }
+  .horario-hrs { color:var(--texto-muted); }
+
+  /* CHATBOT */
+  .chat-fab { position:fixed; bottom:24px; right:24px; z-index:500; width:56px; height:56px; border-radius:50%; background:var(--rosa); color:white; border:none; font-size:1.4rem; cursor:pointer; box-shadow:0 4px 20px rgba(201,132,122,0.5); transition:transform 0.2s; display:flex; align-items:center; justify-content:center; }
+  .chat-fab:hover { transform:scale(1.1); }
+  .chat-notif { position:absolute; top:0; right:0; width:16px; height:16px; background:#e83e3e; border-radius:50%; border:2px solid white; font-size:9px; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; }
+  .chat-box { position:fixed; bottom:92px; right:24px; z-index:500; width:300px; background:white; border-radius:16px; box-shadow:0 8px 40px rgba(0,0,0,0.15); display:none; flex-direction:column; overflow:hidden; max-height:460px; border:1px solid var(--borde); }
+  .chat-box.open { display:flex; animation:chatIn 0.25s ease; }
+  @keyframes chatIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  .chat-head { background:var(--rosa); color:white; padding:12px 14px; display:flex; align-items:center; gap:10px; }
+  .chat-avatar { width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .chat-head-name { font-weight:700; font-size:13px; }
+  .chat-head-status { font-size:11px; opacity:0.85; }
+  .chat-x { background:none; border:none; color:white; font-size:1.2rem; cursor:pointer; margin-left:auto; opacity:0.8; }
+  .chat-msgs { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; background:#f8f8f8; }
+  .cmsg { max-width:85%; }
+  .cmsg.bot { align-self:flex-start; }
+  .cmsg.usr { align-self:flex-end; }
+  .cbubble { padding:8px 12px; border-radius:12px; font-size:13px; line-height:1.5; }
+  .cmsg.bot .cbubble { background:white; color:var(--texto); border:1px solid var(--borde); border-radius:2px 12px 12px 12px; }
+  .cmsg.usr .cbubble { background:var(--rosa); color:white; border-radius:12px 2px 12px 12px; }
+  .chat-chips { display:flex; flex-wrap:wrap; gap:5px; padding:6px 10px 8px; background:#f8f8f8; }
+  .cchip { background:white; border:1.5px solid var(--rosa); color:var(--rosa); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; font-family:"DM Sans",sans-serif; transition:all 0.15s; }
+  .cchip:hover { background:var(--rosa); color:white; }
+  .chat-input-row { display:flex; gap:6px; padding:8px 10px; border-top:1px solid var(--borde); background:white; }
+  .chat-inp { flex:1; border:1.5px solid var(--borde); border-radius:20px; padding:7px 12px; font-size:13px; font-family:"DM Sans",sans-serif; outline:none; }
+  .chat-inp:focus { border-color:var(--rosa); }
+  .chat-send { background:var(--rosa); color:white; border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:0.9rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .chat-send:hover { background:var(--rosa-dark); }
+
+</style>
+</head>
+<body>
+
+<div class="alert-success" id="alertSuccess">✓ ¡Turno reservado! Te esperamos</div>
+
+<div style="position:fixed;top:76px;left:50%;transform:translateX(-50%);background:#c9847a;color:white;padding:6px 20px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;z-index:200;">✦ PÁGINA DEMO</div>
+<header>
+  <div class="logo">Corte<span>Libre</span></div>
+  <div class="ssl-badge">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7aad8c" stroke-width="2.5">
+      <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+    </svg>
+    Pago 100% seguro
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Reservá tu turno — Corte Libre</h1>
+  <p>Elegí tu servicio, seleccioná fecha y horario, y pagá de forma segura con Mercado Pago.</p>
+</div>
+
+<div class="servicios-section">
+  <div class="servicios-titulo">1. Elegí el servicio</div>
+  <div class="servicios-grid">
+    <div class="servicio-card" id="card-dama" onclick="seleccionarServicio('dama')">
+      <span class="selected-badge">✓ Seleccionado</span>
+      <span class="sc-emoji">💇‍♀️</span>
+      <div class="sc-nombre">Corte de cabello dama</div>
+      <div class="sc-desc">Lavado, corte personalizado, secado y peinado final</div>
+      <div class="sc-precio">$30.000</div>
+      <div class="sc-tags">
+        <span class="sc-tag sc-tag-dama">✓ Lavado</span>
+        <span class="sc-tag sc-tag-dama">✓ Corte</span>
+        <span class="sc-tag sc-tag-dama">✓ Secado</span>
+        <span class="sc-tag sc-tag-dama">✓ Peinado</span>
+      </div>
+    </div>
+    <div class="servicio-card" id="card-caballero" onclick="seleccionarServicio('caballero')">
+      <span class="selected-badge">✓ Seleccionado</span>
+      <span class="sc-emoji">💈</span>
+      <div class="sc-nombre">Corte de cabello caballero</div>
+      <div class="sc-desc">Lavado, corte clásico o moderno, perfilado y secado</div>
+      <div class="sc-precio">$26.000</div>
+      <div class="sc-tags">
+        <span class="sc-tag sc-tag-caballero">✓ Lavado</span>
+        <span class="sc-tag sc-tag-caballero">✓ Corte</span>
+        <span class="sc-tag sc-tag-caballero">✓ Perfilado</span>
+        <span class="sc-tag sc-tag-caballero">✓ Secado</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div>
+    <div class="card">
+      <div class="section-title"><span class="section-num" id="num2">2</span> Tus datos</div>
+      <div class="form-row">
+        <div class="form-group"><label>Nombre</label><input type="text" id="inp-nombre" placeholder="Valentina"></div>
+        <div class="form-group"><label>Apellido</label><input type="text" id="inp-apellido" placeholder="González"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>WhatsApp / Teléfono</label><input type="tel" id="inp-tel" placeholder="+54 381 000-0000" oninput="chkTel(this)" onkeypress="return /[0-9+\-\s()]/.test(event.key)"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="inp-email" placeholder="valen@email.com" oninput="chkEmail(this)"></div>
+      </div>
+      <div class="form-group">
+        <label>¿Alguna preferencia o aclaración?</label>
+        <input type="text" id="inp-nota" placeholder="Ej: degradé, clásico, barba incluida, etc.">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><span class="section-num" id="num3">3</span> Elegí tu turno</div>
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" id="inp-fecha" onchange="mostrarTurnos()">
+      </div>
+      <div id="turnos-container" style="display:none;">
+        <label style="font-size:12px;font-weight:500;color:var(--texto-muted);display:block;margin-bottom:8px;">Horario disponible</label>
+        <div class="turnos-grid">
+          <div class="turno-opt" onclick="selectTurno(this,'09:00')">09:00</div>
+          <div class="turno-opt" onclick="selectTurno(this,'10:00')">10:00</div>
+          <div class="turno-opt ocupado">11:00</div>
+          <div class="turno-opt" onclick="selectTurno(this,'12:00')">12:00</div>
+          <div class="turno-opt" onclick="selectTurno(this,'14:00')">14:00</div>
+          <div class="turno-opt ocupado">15:00</div>
+          <div class="turno-opt" onclick="selectTurno(this,'16:00')">16:00</div>
+          <div class="turno-opt" onclick="selectTurno(this,'17:00')">17:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="summary-card">
+      <div class="summary-title">Tu reserva</div>
+      <div class="servicio-img" id="res-img" style="background:linear-gradient(135deg,#f3f4f6 0%,#e5e7eb 100%);">
+        <span class="img-deco d1" id="res-deco1">✂️</span>
+        <span class="img-deco d2" id="res-deco2">🪞</span>
+        <span class="img-deco d3" id="res-deco3">💆</span>
+        <span class="img-emoji" id="res-emoji">🪑</span>
+      </div>
+      <div class="servicio-nombre" id="res-nombre">Ningún servicio seleccionado</div>
+      <div class="servicio-desc" id="res-desc">Elegí dama o caballero para continuar</div>
+      <hr class="divider">
+      <div class="summary-row"><span>Servicio</span><span id="res-servicio">—</span></div>
+      <div class="summary-row"><span>Fecha</span><span id="res-fecha">—</span></div>
+      <div class="summary-row"><span>Horario</span><span id="res-turno">—</span></div>
+      <div class="summary-row"><span>Cuotas</span><span style="color:var(--success);font-weight:600;">Hasta 12 sin interés</span></div>
+      <hr class="divider">
+      <div class="summary-total"><span>Total</span><span id="res-total" style="color:var(--texto-muted);">—</span></div>
+      <div class="turno-seleccionado" id="turno-badge">📅 Turno seleccionado</div>
+      <a href="#" id="btn-reservar" class="btn-reservar" style="background:#999;" onclick="return validarYPagar(event)">
+        Elegí un servicio →
+      </a>
+      <div class="seguridad">🔒 Pago procesado por Mercado Pago</div>
+      <div class="security-tags">
+        <span class="sec-tag">✓ SSL 256-bit</span>
+        <span class="sec-tag">✓ Mercado Pago</span>
+        <span class="sec-tag">✓ Datos protegidos</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const SCRIPT_URL = "#";
+
+  const SERVICIOS = {
+    dama: {
+      nombre: "Corte de cabello dama",
+      desc: "Lavado + corte personalizado + secado + peinado final. Aprox. 45-60 min.",
+      precio: "$30.000",
+      link: "#",
+      emoji: "💇‍♀️",
+      deco: ["✂️","🪞","💆"],
+      bg: "linear-gradient(135deg,#f9ede9 0%,#faf5ec 100%)",
+      color: "var(--rosa)",
+    },
+    caballero: {
+      nombre: "Corte de cabello caballero",
+      desc: "Lavado + corte clásico o moderno + perfilado + secado. Aprox. 30-45 min.",
+      precio: "$26.000",
+      link: "#",
+      emoji: "💈",
+      deco: ["✂️","🪒","🪞"],
+      bg: "linear-gradient(135deg,#e8f2f9 0%,#f0f6fc 100%)",
+      color: "var(--azul)",
+    }
+  };
+
+  let servicioActivo = null;
+  let turnoSeleccionado = "";
+
+  function seleccionarServicio(tipo) {
+    servicioActivo = tipo;
+    const s = SERVICIOS[tipo];
+    document.getElementById("card-dama").className = "servicio-card" + (tipo==="dama" ? " active-dama" : "");
+    document.getElementById("card-caballero").className = "servicio-card" + (tipo==="caballero" ? " active-caballero" : "");
+    document.getElementById("res-emoji").textContent = s.emoji;
+    document.getElementById("res-deco1").textContent = s.deco[0];
+    document.getElementById("res-deco2").textContent = s.deco[1];
+    document.getElementById("res-deco3").textContent = s.deco[2];
+    document.getElementById("res-img").style.background = s.bg;
+    document.getElementById("res-nombre").textContent = s.nombre;
+    document.getElementById("res-desc").textContent = s.desc;
+    document.getElementById("res-servicio").textContent = s.nombre;
+    document.getElementById("res-total").textContent = s.precio;
+    document.getElementById("res-total").style.color = s.color;
+    const btnR = document.getElementById("btn-reservar");
+    btnR.href = s.link;
+    btnR.textContent = "Confirmar y pagar →";
+    btnR.style.background = tipo === "dama" ? "#c9847a" : "#2c5f8a";
+    document.querySelectorAll(".section-num").forEach(n => {
+      n.style.background = tipo === "dama" ? "var(--rosa)" : "var(--azul)";
+    });
+  }
+
+  function mostrarTurnos() {
+    const fecha = document.getElementById("inp-fecha").value;
+    document.getElementById("turnos-container").style.display = fecha ? "block" : "none";
+    const d = new Date(fecha + "T12:00:00");
+    document.getElementById("res-fecha").textContent = fecha
+      ? d.toLocaleDateString("es-AR", {weekday:"long", day:"numeric", month:"long"})
+      : "—";
+    turnoSeleccionado = "";
+    document.getElementById("res-turno").textContent = "—";
+    document.getElementById("turno-badge").style.display = "none";
+    document.querySelectorAll(".turno-opt").forEach(t => t.classList.remove("active"));
+  }
+
+  function selectTurno(el, hora) {
+    if (el.classList.contains("ocupado")) return;
+    document.querySelectorAll(".turno-opt").forEach(t => t.classList.remove("active"));
+    el.classList.add("active");
+    turnoSeleccionado = hora;
+    document.getElementById("res-turno").textContent = hora + " hs";
+    const badge = document.getElementById("turno-badge");
+    badge.textContent = "📅 " + document.getElementById("res-fecha").textContent + " a las " + hora + " hs";
+    badge.style.display = "block";
+  }
+
+  function validarEmail(email) {
+    return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
+  }
+  function validarTelefono(tel) {
+    const limpio = tel.replace(/[\s\-().+]/g, "");
+    return limpio.length >= 8 && /^[0-9]+$/.test(limpio);
+  }
+  function chkEmail(input) {
+    const ok = validarEmail(input.value);
+    input.style.borderColor = input.value.length > 3 ? (ok ? "#7aad8c" : "#e83e3e") : "";
+  }
+  function chkTel(input) {
+    const limpio = input.value.replace(/[\s\-().+]/g, "");
+    const ok = limpio.length >= 8 && /^[0-9]+$/.test(limpio);
+    input.style.borderColor = input.value.length > 4 ? (ok ? "#7aad8c" : "#e83e3e") : "";
+  }
+
+  function validarYPagar(e) {
+    if (!servicioActivo) { showAlert("⚠️ Elegí un servicio primero"); return false; }
+    const nombre = document.getElementById("inp-nombre").value.trim();
+    const email = document.getElementById("inp-email").value.trim();
+    const tel = document.getElementById("inp-tel").value.trim();
+    const fecha = document.getElementById("inp-fecha").value;
+    if (!nombre) { showAlert("⚠️ Completá tu nombre"); return false; }
+    if (!email) { showAlert("⚠️ Completá tu email"); return false; }
+    if (!validarEmail(email)) { showAlert("⚠️ El email no es válido"); return false; }
+    if (tel && !validarTelefono(tel)) { showAlert("⚠️ El teléfono no es válido"); return false; }
+    if (!fecha) { showAlert("⚠️ Elegí una fecha"); return false; }
+    if (!turnoSeleccionado) { showAlert("⚠️ Elegí un horario"); return false; }
+
+    localStorage.setItem("estilomc_reserva", JSON.stringify({
+      nombre, apellido: document.getElementById("inp-apellido").value,
+      email, telefono: tel,
+      servicio: SERVICIOS[servicioActivo].nombre,
+      metodoPago: "Mercado Pago",
+      total: SERVICIOS[servicioActivo].precio,
+      fecha: document.getElementById("res-fecha").textContent,
+      turno: turnoSeleccionado,
+      nota: document.getElementById("inp-nota").value
+    }));
+
+    fetch(SCRIPT_URL, {
+      method: "POST", mode: "no-cors",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        nombre, apellido: document.getElementById("inp-apellido").value,
+        email, telefono: tel,
+        servicio: SERVICIOS[servicioActivo].nombre,
+        metodoPago: "Mercado Pago",
+        total: SERVICIOS[servicioActivo].precio,
+        fecha: document.getElementById("res-fecha").textContent,
+        turno: turnoSeleccionado,
+        nota: document.getElementById("inp-nota").value
+      })
+    }).catch(()=>{});
+
+    return true;
+  }
+
+  function showAlert(msg) {
+    const a = document.getElementById("alertSuccess");
+    a.textContent = msg; a.style.display = "block";
+    setTimeout(() => a.style.display = "none", 3500);
+  }
+
+  document.getElementById("inp-fecha").min = new Date().toISOString().split("T")[0];
+</script>
+
+<!-- MAPA -->
+<div class="mapa-section">
+  <h3>📍 ¿Dónde estamos?</h3>
+  <p>Av. Solís O 1288, Santiago del Estero</p>
+  <a href="https://maps.google.com/?q=Av.+Solis+O+1288,+Santiago+del+Estero,+Argentina" target="_blank" class="mapa-btn">
+    <span style="font-size:2.5rem;">🗺️</span>
+    <div class="mapa-btn-text">
+      <strong>Av. Solís O 1288</strong>
+      <span>Santiago del Estero</span>
+      <span class="mapa-pill">📍 Ver en Google Maps</span>
+    </div>
+  </a>
+  <div class="horarios-grid">
+    <div class="horario-item">
+      <div class="horario-dia">Lun · Mié · Vie</div>
+      <div class="horario-hrs">18:00 — 21:30 hs</div>
+    </div>
+    <div class="horario-item">
+      <div class="horario-dia">Mar · Jue · Sáb</div>
+      <div class="horario-hrs">9:00 — 12:30 hs<br>17:00 — 21:30 hs</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<button class="chat-fab" onclick="toggleChat()">
+  💬<span class="chat-notif">1</span>
+</button>
+
+<div class="chat-box" id="chatBox">
+  <div class="chat-head">
+    <div class="chat-head-av">✂️</div>
+    <div class="chat-head-info">
+      <div class="chat-head-name">Corte Libre</div>
+      <div class="chat-head-status">● En línea · Respondemos al instante</div>
+    </div>
+    <button class="chat-head-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-chips">
+    <button class="chat-chip" onclick="quickMsg('¿Cuánto cuesta?')">💰 Precios</button>
+    <button class="chat-chip" onclick="quickMsg('¿Cuáles son los horarios?')">🕐 Horarios</button>
+    <button class="chat-chip" onclick="quickMsg('¿Dónde están?')">📍 Ubicación</button>
+    <button class="chat-chip" onclick="quickMsg('¿Cómo reservo?')">📅 Reservar</button>
+    <button class="chat-chip" onclick="quickMsg('¿Cómo pago?')">💳 Pagos</button>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Escribí tu pregunta..." onkeypress="if(event.key==='Enter')sendMsg()">
+    <button class="chat-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<script>
+  const RESPUESTAS = [
+    { palabras:['precio','cuesta','vale','cobran','costo','tarifa'], resp:'💇‍♀️ Corte de dama: <strong>$30.000</strong><br>💈 Corte de caballero: <strong>$26.000</strong>' },
+    { palabras:['horario','hora','atienden','abierto','cuando','dias','dia'], resp:'🕐 Nuestros horarios:<br><strong>Lun · Mié · Vie:</strong> 18:00 a 21:30 hs<br><strong>Mar · Jue · Sáb:</strong> 9:00 a 12:30 hs y 17:00 a 21:30 hs' },
+    { palabras:['donde','ubicacion','direccion','lugar','local','domicilio'], resp:'📍 Estamos en <strong>Av. Solís O 1288</strong>, Santiago del Estero.<br><a href="https://maps.google.com/?q=Av.+Solis+O+1288,+Santiago+del+Estero" target="_blank" style="color:var(--rosa)">Ver en Google Maps →</a>' },
+    { palabras:['reservar','turno','sacar','pedir','agendar'], resp:'📅 Para reservar:<br>1. Elegí tu servicio arriba<br>2. Completá tus datos<br>3. Elegí fecha y horario<br>4. Pagá con Mercado Pago 💙' },
+    { palabras:['pago','pagar','mercado','transferencia','efectivo','tarjeta'], resp:'💳 Aceptamos <strong>Mercado Pago</strong>:<br>• Tarjeta crédito / débito<br>• Billetera MP<br>• Pago Fácil · Rapipago' },
+    { palabras:['cancelar','cancelacion','reprogramar','cambiar'], resp:'📞 Para cancelar o reprogramar contactanos por WhatsApp con 24hs de anticipación al <strong>+54 385 311-5034</strong>' },
+    { palabras:['whatsapp','telefono','contacto','llamar','numero'], resp:'📱 WhatsApp: <strong>+54 385 311-5034</strong>' },
+    { palabras:['hola','buenas','buen dia','buenas tardes','buenas noches','hey'], resp:'¡Hola! 👋 Soy el asistente de <strong>Corte Libre</strong>. ¿En qué puedo ayudarte?' },
+    { palabras:['gracias','ok','listo','perfecto','genial','dale'], resp:'¡Con gusto! 😊 ¿Puedo ayudarte con algo más?' },
+  ];
+
+  let chatAbierto = false;
+
+  function toggleChat() {
+    chatAbierto = !chatAbierto;
+    document.getElementById('chatBox').classList.toggle('open', chatAbierto);
+    const notif = document.querySelector('.chat-notif');
+    if (notif) notif.style.display = 'none';
+    if (chatAbierto && document.getElementById('chatMsgs').children.length === 0) {
+      setTimeout(() => addMsg('bot', '¡Hola! 👋 Soy el asistente de <strong>Corte Libre</strong>. ¿En qué puedo ayudarte hoy?'), 300);
+    }
+  }
+
+  function addMsg(tipo, texto) {
+    const msgs = document.getElementById('chatMsgs');
+    const div = document.createElement('div');
+    div.className = 'cmsg ' + tipo;
+    div.innerHTML = '<div class="cmsg-bubble">' + texto + '</div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function quickMsg(texto) {
+    addMsg('user', texto);
+    setTimeout(() => responder(texto), 500);
+  }
+
+  function sendMsg() {
+    const input = document.getElementById('chatInput');
+    const texto = input.value.trim();
+    if (!texto) return;
+    addMsg('user', texto);
+    input.value = '';
+    setTimeout(() => responder(texto), 500);
+  }
+
+  function responder(texto) {
+    const lower = texto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    for (const r of RESPUESTAS) {
+      if (r.palabras.some(p => lower.includes(p))) {
+        addMsg('bot', r.resp); return;
+      }
+    }
+    addMsg('bot', '🤔 No entendí tu pregunta. Escribinos directamente por WhatsApp al <strong>+54 385 311-5034</strong> 😊');
+  }
+</script>
+
+
+<!-- MAPA Y HORARIOS -->
+<div style="background:var(--blanco);border-top:1px solid var(--borde);padding:2rem 1.5rem;">
+  <div style="max-width:960px;margin:0 auto;">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:0.25rem;">📍 ¿Dónde estamos?</h3>
+    <p style="font-size:13px;color:var(--texto-muted);margin-bottom:1rem;">Av. Solís O 1288, Santiago del Estero</p>
+    <a href="https://maps.google.com/?q=Av.+Solis+O+1288,+Santiago+del+Estero,+Argentina" target="_blank" class="mapa-btn">
+      <span style="font-size:2.5rem;">🗺️</span>
+      <div class="mapa-btn-text">
+        <span class="mapa-btn-title">Av. Solís O 1288</span>
+        <span class="mapa-btn-sub">Santiago del Estero</span>
+        <span class="mapa-badge">📍 Ver en Google Maps</span>
+      </div>
+    </a>
+    <div class="horarios-grid">
+      <div class="horario-item">
+        <div class="horario-dia">Lun · Mié · Vie</div>
+        <div class="horario-hrs">18:00 — 21:30 hs</div>
+      </div>
+      <div class="horario-item">
+        <div class="horario-dia">Mar · Jue · Sáb</div>
+        <div class="horario-hrs">9:00 — 12:30 hs<br>17:00 — 21:30 hs</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<button class="chat-fab" onclick="toggleChat()">
+  💬<span class="chat-notif">1</span>
+</button>
+
+<div class="chat-box" id="chatBox">
+  <div class="chat-head">
+    <div class="chat-avatar">✂️</div>
+    <div>
+      <div class="chat-head-name">Corte Libre</div>
+      <div class="chat-head-status">● En línea · Respondemos al instante</div>
+    </div>
+    <button class="chat-x" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-chips">
+    <button class="cchip" onclick="qMsg('¿Cuánto cuesta el corte?')">💰 Precios</button>
+    <button class="cchip" onclick="qMsg('¿Cuáles son los horarios?')">🕐 Horarios</button>
+    <button class="cchip" onclick="qMsg('¿Dónde están?')">📍 Ubicación</button>
+    <button class="cchip" onclick="qMsg('¿Cómo reservo?')">📅 Reservar</button>
+    <button class="cchip" onclick="qMsg('¿Cómo pago?')">💳 Pagos</button>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-inp" id="chatInp" placeholder="Escribí tu pregunta..." onkeypress="if(event.key==='Enter')sendMsg()">
+    <button class="chat-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<script>
+  const RESPUESTAS = [
+    { keys:['precio','cuesta','vale','costo','cobran','tarifa'], txt:'💇‍♀️ Corte dama: <strong>$30.000</strong><br>💈 Corte caballero: <strong>$26.000</strong>' },
+    { keys:['horario','hora','atienden','abierto','cuando','dias','dia'], txt:'🕐 <strong>Lun · Mié · Vie:</strong> 18:00 a 21:30 hs<br><strong>Mar · Jue · Sáb:</strong> 9:00 a 12:30 hs<br>y 17:00 a 21:30 hs' },
+    { keys:['donde','ubicacion','direccion','lugar','local','domicilio','estan'], txt:'📍 Estamos en <strong>Av. Solís O 1288</strong>, Santiago del Estero. Tocá el mapa en la página para ver cómo llegar.' },
+    { keys:['reservar','turno','sacar','pedir','agendar','como reservo'], txt:'📅 <strong>Reservar es fácil:</strong><br>1. Elegí dama o caballero<br>2. Completá tus datos<br>3. Elegí fecha y horario<br>4. Pagá con Mercado Pago 💙' },
+    { keys:['pago','pagar','mercado','transferencia','efectivo','tarjeta'], txt:'💳 Pagamos con <strong>Mercado Pago</strong>:<br>• Tarjeta crédito/débito<br>• Billetera MP<br>• Pago Fácil · Rapipago' },
+    { keys:['cancelar','cancelacion','reprogramar','cambiar'], txt:'📞 Para cancelar o reprogramar escribinos por WhatsApp al <strong>+54 385 311-5034</strong> con 24hs de anticipación.' },
+    { keys:['hola','buenas','buen dia','buenas tardes','buenas noches','hi'], txt:'¡Hola! 👋 Soy el asistente de <strong>Corte Libre</strong>. ¿En qué puedo ayudarte?' },
+    { keys:['gracias','ok','listo','perfecto','genial','dale'], txt:'¡Con gusto! 😊 ¿Puedo ayudarte con algo más?' },
+    { keys:['whatsapp','telefono','contacto','llamar','numero'], txt:'📱 WhatsApp: <strong>+54 385 311-5034</strong>' },
+  ];
+
+  let abierto = false;
+
+  function toggleChat() {
+    abierto = !abierto;
+    document.getElementById('chatBox').classList.toggle('open', abierto);
+    document.querySelector('.chat-notif').style.display = 'none';
+    if (abierto && document.getElementById('chatMsgs').children.length === 0) {
+      setTimeout(() => addMsg('bot', '¡Hola! 👋 Soy el asistente de <strong>Corte Libre</strong>. ¿En qué puedo ayudarte hoy?'), 300);
+    }
+  }
+
+  function addMsg(tipo, txt) {
+    const m = document.getElementById('chatMsgs');
+    const d = document.createElement('div');
+    d.className = 'cmsg ' + tipo;
+    d.innerHTML = '<div class="cbubble">' + txt + '</div>';
+    m.appendChild(d);
+    m.scrollTop = m.scrollHeight;
+  }
+
+  function qMsg(txt) { addMsg('usr', txt); setTimeout(() => responder(txt), 500); }
+
+  function sendMsg() {
+    const inp = document.getElementById('chatInp');
+    const txt = inp.value.trim();
+    if (!txt) return;
+    addMsg('usr', txt);
+    inp.value = '';
+    setTimeout(() => responder(txt), 500);
+  }
+
+  function responder(txt) {
+    const lower = txt.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    for (const r of RESPUESTAS) {
+      if (r.keys.some(k => lower.includes(k))) { addMsg('bot', r.txt); return; }
+    }
+    addMsg('bot', '🤔 No entendí tu pregunta. Escribinos por WhatsApp al <strong>+54 385 311-5034</strong> y te ayudamos. 😊');
+  }
+</script>
+
+
+<div style="background:linear-gradient(135deg,#2d2020,#4a2c2a);padding:4rem 2rem;text-align:center;">
+  <h2 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:white;margin-bottom:0.5rem;">¿Tenés una <em style="color:#c9847a;font-style:italic;">peluquería?</em></h2>
+  <p style="color:rgba(255,255,255,0.7);font-size:15px;margin-bottom:0.75rem;">Esta página puede ser tuya — con tus servicios, precios y reservas online.</p>
+  <div style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#c9847a;margin-bottom:1.5rem;"><small style="font-size:1rem;opacity:0.7;font-family:'DM Sans',sans-serif;">Inversión única </small>$120.000</div>
+  <div style="margin-bottom:1.5rem;">
+    <a href="https://mpago.la/2kBtwce" style="background:#c9847a;color:white;border-radius:12px;padding:18px 40px;font-size:16px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(201,132,122,0.4);">💳 Comprá tu página ahora — $120.000</a>
+  </div>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Vi%20la%20demo%20de%20peluqueria%20y%20quiero%20mi%20pagina" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:12px 24px;font-size:13px;font-weight:600;color:white;text-decoration:none;">💬 WhatsApp</a>
+    <a href="https://instagram.com/emiliocabania" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:12px 24px;font-size:13px;font-weight:600;color:white;text-decoration:none;">📸 Instagram</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:12px 24px;font-size:13px;font-weight:600;color:white;text-decoration:none;">📧 Email</a>
+  </div>
+  <p style="font-size:12px;color:rgba(255,255,255,0.4);">✓ Entrega en 48hs · ✓ Reservas online · ✓ Pagos con Mercado Pago · ✓ Hosting gratuito</p>
+</div>
+
+</body>
+</html>

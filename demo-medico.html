@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Alejandro Pérez — Medicina General</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--azul:#1565c0;--azul-dark:#0d47a1;--azul-light:#e3f2fd;--verde:#2e7d32;--texto:#0a1628;--texto-muted:#546e7a;--borde:rgba(21,101,192,0.15);--fondo:#f5f9ff;--blanco:#ffffff}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--fondo);color:var(--texto);overflow-x:hidden}
+.demo-badge{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--verde);color:white;padding:6px 20px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;z-index:200}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--borde);padding:0 2rem;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:var(--azul)}.nav-logo span{color:var(--texto);font-size:0.85rem;display:block;font-weight:400}
+.nav-links{display:flex;gap:2rem;list-style:none}.nav-links a{font-size:12px;color:var(--texto-muted);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}.nav-links a:hover{color:var(--azul)}
+.nav-cta{background:var(--azul);color:white;border:none;border-radius:6px;padding:10px 20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:1px;text-transform:uppercase;text-decoration:none}.nav-cta:hover{background:var(--azul-dark);color:white}
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4rem;padding:8rem 4rem 4rem;background:var(--blanco);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:0;right:0;width:50%;height:100%;background:var(--azul-light);clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%);z-index:0}
+.hero-content{position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--azul);font-weight:600;margin-bottom:1.5rem}
+.hero-tag::before{content:'';width:30px;height:1px;background:var(--azul)}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:1rem;letter-spacing:-0.5px}
+.hero h1 em{font-style:normal;color:var(--azul)}
+.hero-sub{font-size:15px;color:var(--texto-muted);line-height:1.8;max-width:440px;margin-bottom:2rem}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{background:var(--azul);color:white;border:none;border-radius:6px;padding:14px 28px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s}.btn-primary:hover{background:var(--azul-dark);transform:translateY(-2px);color:white}
+.btn-secondary{background:transparent;color:var(--azul);border:1.5px solid var(--azul);border-radius:6px;padding:14px 28px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s}.btn-secondary:hover{background:var(--azul);color:white;transform:translateY(-2px)}
+.hero-visual{position:relative;z-index:1;display:flex;flex-direction:column;gap:1rem}
+.hero-img{background:linear-gradient(135deg,#bbdefb,#e3f2fd);border-radius:16px;height:260px;display:flex;align-items:center;justify-content:center;font-size:6rem;border:1px solid var(--borde)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.stat{background:var(--blanco);border:1px solid var(--borde);border-radius:10px;padding:1rem;text-align:center}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--azul);display:block}
+.stat-label{font-size:11px;color:var(--texto-muted);text-transform:uppercase}
+.section-wrap{padding:5rem 2rem}.section-wrap.light{background:var(--fondo)}.section-wrap.white{background:var(--blanco)}.section-wrap.blue{background:var(--azul-light)}
+.section{max-width:1100px;margin:0 auto}
+.section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--azul);font-weight:600;margin-bottom:0.75rem;display:block}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:0.5rem;letter-spacing:-0.5px}
+.section-title em{font-style:normal;color:var(--azul)}
+.section-sub{font-size:14px;color:var(--texto-muted);margin-bottom:3rem;max-width:500px;line-height:1.7}
+.servicios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.serv-card{background:var(--blanco);border-radius:14px;border:1px solid var(--borde);padding:1.75rem;transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden}
+.serv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--azul);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
+.serv-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(21,101,192,0.12)}.serv-card:hover::before{transform:scaleX(1)}
+.serv-icon{font-size:2rem;margin-bottom:0.75rem;display:block}
+.serv-nombre{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.4rem}
+.serv-desc{font-size:12px;color:var(--texto-muted);line-height:1.6;margin-bottom:0.75rem}
+.serv-precio{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--azul)}
+.serv-btn{display:block;width:100%;background:var(--azul-light);color:var(--azul-dark);border:none;border-radius:6px;padding:9px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:1rem;text-decoration:none;transition:all 0.2s;text-align:center}.serv-btn:hover{background:var(--azul);color:white}
+.reserva-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.reserva-form{background:var(--azul-light);border-radius:16px;padding:2.5rem;border:1px solid var(--borde)}
+.reserva-form h3{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:0.25rem}
+.reserva-form p{font-size:13px;color:var(--texto-muted);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--borde)}
+.fg{margin-bottom:14px}.fg label{display:block;font-size:11px;font-weight:700;color:var(--texto-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px}
+.fg input,.fg select{width:100%;border:1.5px solid var(--borde);border-radius:8px;padding:11px 14px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--texto);background:var(--blanco);outline:none;transition:border-color 0.15s}
+.fg input:focus,.fg select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(21,101,192,0.1)}
+.turnos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.turno-opt{border:1.5px solid var(--borde);border-radius:8px;padding:9px 6px;cursor:pointer;text-align:center;font-size:13px;font-weight:500;color:var(--texto-muted);transition:all 0.15s;background:var(--blanco)}.turno-opt:hover{border-color:var(--azul);color:var(--azul);background:var(--azul-light)}.turno-opt.active{border-color:var(--azul);background:var(--azul-light);color:var(--azul-dark);font-weight:700}.turno-opt.ocupado{opacity:0.4;cursor:not-allowed;text-decoration:line-through}
+.turno-badge{background:var(--azul-light);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--azul-dark);font-weight:600;text-align:center;margin-top:12px;display:none}
+.btn-reservar{width:100%;background:var(--azul);color:white;border:none;border-radius:8px;padding:15px;font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;margin-top:1rem;transition:all 0.2s;display:block;text-align:center;text-decoration:none}.btn-reservar:hover{background:var(--azul-dark);transform:translateY(-1px);color:white}
+.info-items{display:flex;flex-direction:column;gap:14px}.info-item{display:flex;gap:12px;font-size:13px}.info-item .icon{font-size:1.2rem;flex-shrink:0}.info-item strong{display:block;font-weight:600;color:var(--texto)}.info-item span{color:var(--texto-muted)}
+.comprar-wrap{background:linear-gradient(135deg,var(--azul-dark),var(--azul));padding:5rem 2rem;text-align:center}
+.comprar-wrap h2{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:white;margin-bottom:0.5rem;letter-spacing:-0.5px}
+.comprar-wrap p{color:rgba(255,255,255,0.75);font-size:15px;margin-bottom:0.75rem}
+.comprar-precio{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:white;margin-bottom:1.5rem;display:block}
+.btn-comprar-mp{background:white;color:var(--azul);border-radius:12px;padding:18px 40px;font-size:16px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.2);margin-bottom:1.5rem;transition:all 0.2s}.btn-comprar-mp:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.3);color:var(--azul)}
+.contact-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.contact-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:12px 24px;font-size:13px;font-weight:600;color:white;text-decoration:none;transition:all 0.2s}.contact-btn:hover{background:rgba(255,255,255,0.25);transform:translateY(-2px);color:white}
+.comprar-nota{font-size:12px;color:rgba(255,255,255,0.4)}
+footer{background:#050d1a;color:rgba(255,255,255,0.3);padding:1.5rem;text-align:center;font-size:12px}footer span{color:var(--azul)}
+.alert{display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--azul);color:white;padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;z-index:999;white-space:nowrap}
+.reveal{opacity:0;transform:translateY(24px);transition:all 0.6s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding:7rem 1.5rem 3rem}.hero::after{display:none}.servicios-grid{grid-template-columns:1fr}.reserva-grid{grid-template-columns:1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="demo-badge">✦ PÁGINA DEMO</div>
+<div class="alert" id="alert"></div>
+<nav>
+  <div class="nav-logo">Dr. Alejandro Pérez<span>Medicina General · MP 1234</span></div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#reserva">Turno</a></li>
+    <li><a href="#comprar">Quiero mi página</a></li>
+  </ul>
+  <a href="#reserva" class="nav-cta">Pedir turno</a>
+</nav>
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">🩺 Medicina General</div>
+    <h1>Tu salud en manos <em>expertas</em></h1>
+    <p class="hero-sub">Atención médica personalizada, cercana y de calidad. Consultas presenciales y online. Pedí tu turno en minutos.</p>
+    <div class="hero-btns">
+      <a href="#reserva" class="btn-primary">Pedir turno</a>
+      <a href="#servicios" class="btn-secondary">Ver servicios</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img">🩺</div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">+10</span><span class="stat-label">Años exp.</span></div>
+      <div class="stat"><span class="stat-num">+2000</span><span class="stat-label">Pacientes</span></div>
+      <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Confidencial</span></div>
+    </div>
+  </div>
+</section>
+<div class="section-wrap light" id="servicios">
+  <div class="section">
+    <span class="section-tag reveal">Servicios médicos</span>
+    <h2 class="section-title reveal">¿En qué puedo <em>ayudarte?</em></h2>
+    <p class="section-sub reveal">Atención integral para toda la familia en un ambiente cálido y profesional.</p>
+    <div class="servicios-grid">
+      <div class="serv-card reveal"><span class="serv-icon">🩺</span><div class="serv-nombre">Consulta general</div><div class="serv-desc">Diagnóstico, control de salud, derivaciones y recetas médicas.</div><div class="serv-precio">$15.000</div><a href="#reserva" class="serv-btn">Pedir turno</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">💻</span><div class="serv-nombre">Consulta online</div><div class="serv-desc">Videoconsulta desde tu casa. Mismo nivel de atención que presencial.</div><div class="serv-precio">$12.000</div><a href="#reserva" class="serv-btn">Pedir turno</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">📋</span><div class="serv-nombre">Control preventivo</div><div class="serv-desc">Chequeo anual completo con laboratorio y evaluación integral.</div><div class="serv-precio">$20.000</div><a href="#reserva" class="serv-btn">Pedir turno</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">👶</span><div class="serv-nombre">Pediatría</div><div class="serv-desc">Controles de crecimiento, vacunas y atención de enfermedades infantiles.</div><div class="serv-precio">$15.000</div><a href="#reserva" class="serv-btn">Pedir turno</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">📄</span><div class="serv-nombre">Certificados médicos</div><div class="serv-desc">Aptos físicos, certificados laborales, escolares y deportivos.</div><div class="serv-precio">$8.000</div><a href="#reserva" class="serv-btn">Pedir turno</a></div>
+      <div class="serv-card reveal"><span class="serv-icon">🚨</span><div class="serv-nombre">Urgencias</div><div class="serv-desc">Atención de urgencias médicas. Consultá disponibilidad por WhatsApp.</div><div class="serv-precio">A consultar</div><a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a></div>
+    </div>
+  </div>
+</div>
+<div class="section-wrap blue" id="reserva">
+  <div class="section">
+    <div class="reserva-grid">
+      <div class="reserva-form reveal">
+        <h3>Pedí tu turno</h3>
+        <p>Atención rápida y personalizada.</p>
+        <div class="fg"><label>Nombre completo</label><input type="text" id="r-nombre" placeholder="Tu nombre"></div>
+        <div class="fg"><label>WhatsApp</label><input type="tel" id="r-tel" placeholder="+54 385 000-0000"></div>
+        <div class="fg"><label>Email</label><input type="email" id="r-email" placeholder="tu@email.com"></div>
+        <div class="fg"><label>Tipo de consulta</label>
+          <select id="r-servicio">
+            <option value="">Seleccioná</option>
+            <option value="Consulta general">Consulta general — $15.000</option>
+            <option value="Consulta online">Consulta online — $12.000</option>
+            <option value="Control preventivo">Control preventivo — $20.000</option>
+            <option value="Pediatría">Pediatría — $15.000</option>
+            <option value="Certificado médico">Certificado médico — $8.000</option>
+          </select>
+        </div>
+        <div class="fg"><label>Modalidad</label>
+          <select id="r-modalidad">
+            <option value="presencial">Presencial</option>
+            <option value="online">Online (videollamada)</option>
+          </select>
+        </div>
+        <div class="fg"><label>Fecha</label><input type="date" id="r-fecha" onchange="mostrarTurnos()"></div>
+        <div id="turnos-container" style="display:none;">
+          <label style="font-size:11px;font-weight:700;color:var(--texto-muted);display:block;margin-bottom:8px;text-transform:uppercase;">Horario</label>
+          <div class="turnos-grid">
+            <div class="turno-opt" onclick="selTurno(this,'08:00')">08:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'09:00')">09:00</div>
+            <div class="turno-opt ocupado">10:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'11:00')">11:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'16:00')">16:00</div>
+            <div class="turno-opt ocupado">17:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'18:00')">18:00</div>
+            <div class="turno-opt" onclick="selTurno(this,'19:00')">19:00</div>
+          </div>
+        </div>
+        <div class="turno-badge" id="turno-badge">📅 Turno seleccionado</div>
+        <button class="btn-reservar" onclick="reservar()">Confirmar turno →</button>
+      </div>
+      <div class="reveal">
+        <h3 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin-bottom:1rem;letter-spacing:-0.5px;">Tu salud es nuestra <em style="color:var(--azul);">prioridad</em></h3>
+        <p style="font-size:14px;color:var(--texto-muted);line-height:1.8;margin-bottom:1.5rem;">Atención cálida, rápida y profesional. Porque tu tiempo y tu salud son lo más importante.</p>
+        <div class="info-items">
+          <div class="info-item"><span class="icon">📍</span><div><strong>Consultorio</strong><span>Santiago del Estero Capital</span></div></div>
+          <div class="info-item"><span class="icon">🕐</span><div><strong>Horarios</strong><span>Lunes a Viernes · 8:00 a 19:00 hs</span></div></div>
+          <div class="info-item"><span class="icon">💳</span><div><strong>Pago</strong><span>Efectivo · Tarjeta · Mercado Pago</span></div></div>
+          <div class="info-item"><span class="icon">💻</span><div><strong>Online disponible</strong><span>Todo el país</span></div></div>
+          <div class="info-item"><span class="icon">🔒</span><div><strong>Confidencialidad</strong><span>100% garantizada</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="comprar-wrap" id="comprar">
+  <h2>¿Sos médico y querés tu propia página?</h2>
+  <p>Tus pacientes pueden sacar turno online en cualquier momento del día.</p>
+  <span class="comprar-precio"><small style="font-size:1rem;opacity:0.7;font-family:'DM Sans',sans-serif;">Inversión única </small>$120.000</span>
+  <div style="margin-bottom:1.5rem;"><a href="https://mpago.la/2kBtwce" class="btn-comprar-mp">💳 Comprá tu página ahora — $120.000</a></div>
+  <div class="contact-btns">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Vi%20la%20demo%20medico%20y%20quiero%20mi%20pagina" class="contact-btn">💬 WhatsApp</a>
+    <a href="https://instagram.com/emiliocabania" class="contact-btn">📸 Instagram</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" class="contact-btn">📧 Email</a>
+  </div>
+  <p class="comprar-nota">✓ Entrega en 48hs · ✓ Turnos online · ✓ Pagos con Mercado Pago · ✓ Hosting gratuito</p>
+</div>
+<footer><span>Dr. Alejandro Pérez</span> · Medicina General · Santiago del Estero 🇦🇷</footer>
+<script>
+  let turnoSel='';
+  function mostrarTurnos(){const f=document.getElementById('r-fecha').value;document.getElementById('turnos-container').style.display=f?'block':'none';turnoSel='';document.getElementById('turno-badge').style.display='none';document.querySelectorAll('.turno-opt').forEach(t=>t.classList.remove('active'));}
+  function selTurno(el,hora){if(el.classList.contains('ocupado'))return;document.querySelectorAll('.turno-opt').forEach(t=>t.classList.remove('active'));el.classList.add('active');turnoSel=hora;const d=new Date(document.getElementById('r-fecha').value+'T12:00:00');const f=d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'});const b=document.getElementById('turno-badge');b.textContent='📅 '+f+' a las '+hora+' hs';b.style.display='block';}
+  function reservar(){const nombre=document.getElementById('r-nombre').value.trim();const email=document.getElementById('r-email').value.trim();const servicio=document.getElementById('r-servicio').value;const fecha=document.getElementById('r-fecha').value;if(!nombre){showAlert('⚠️ Completá tu nombre');return;}if(!email){showAlert('⚠️ Completá tu email');return;}if(!servicio){showAlert('⚠️ Elegí tipo de consulta');return;}if(!fecha||!turnoSel){showAlert('⚠️ Elegí fecha y horario');return;}showAlert('✓ ¡Turno reservado! Te esperamos 🩺');}
+  function showAlert(msg){const a=document.getElementById('alert');a.textContent=msg;a.style.background=msg.includes('⚠️')?'#c0392b':'var(--azul)';a.style.display='block';setTimeout(()=>a.style.display='none',4000);}
+  document.getElementById('r-fecha').min=new Date().toISOString().split('T')[0];
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

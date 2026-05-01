@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moda Libre — Tienda de Ropa</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--negro:#0a0a0a;--blanco:#f8f7f4;--acento:#e8c547;--acento2:#e84393;--texto:#0a0a0a;--texto-muted:#666;--borde:rgba(0,0,0,0.08);--fondo:#f5f5f0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--fondo);color:var(--texto);overflow-x:hidden}
+.demo-badge{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--acento2);color:white;padding:6px 20px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;z-index:200}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--negro);padding:0 2rem;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--blanco);letter-spacing:-0.5px}.nav-logo span{color:var(--acento)}
+.nav-links{display:flex;gap:2rem;list-style:none}.nav-links a{font-size:12px;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}.nav-links a:hover{color:var(--acento)}
+.nav-cta{background:var(--acento);color:var(--negro);border:none;border-radius:4px;padding:10px 20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;text-decoration:none}.nav-cta:hover{background:#d4b030;color:var(--negro)}
+.hero{min-height:100vh;background:var(--negro);display:flex;align-items:center;padding:8rem 4rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(232,197,71,0.1),transparent 70%)}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%}
+.hero-tag{display:inline-block;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acento);font-weight:600;margin-bottom:1.5rem;border:1px solid rgba(232,197,71,0.3);border-radius:4px;padding:5px 14px}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;color:var(--blanco);line-height:1.0;margin-bottom:1rem;letter-spacing:-2px}
+.hero h1 em{font-style:normal;color:var(--acento)}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.6);line-height:1.8;max-width:440px;margin-bottom:2rem}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-gold{background:var(--acento);color:var(--negro);border:none;border-radius:4px;padding:14px 28px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s}.btn-gold:hover{background:#d4b030;transform:translateY(-2px);color:var(--negro)}
+.btn-outline{background:transparent;color:var(--blanco);border:1.5px solid rgba(255,255,255,0.3);border-radius:4px;padding:14px 28px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s}.btn-outline:hover{border-color:var(--acento);color:var(--acento)}
+.hero-visual{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.hero-item{border-radius:12px;overflow:hidden;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:2rem;text-align:center;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem}
+.hero-item-emoji{font-size:3rem}
+.hero-item-name{font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;color:var(--blanco)}
+.hero-item-precio{font-size:0.8rem;color:var(--acento);font-weight:600}
+.section-wrap{padding:5rem 2rem}.section-wrap.dark{background:var(--negro)}.section-wrap.light{background:var(--fondo)}.section-wrap.white{background:var(--blanco)}
+.section{max-width:1200px;margin:0 auto}
+.section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acento2);font-weight:600;margin-bottom:0.75rem;display:block}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin-bottom:0.5rem;letter-spacing:-1px}
+.section-title.white{color:var(--blanco)}.section-title em{font-style:normal;color:var(--acento2)}
+.section-sub{font-size:14px;color:var(--texto-muted);margin-bottom:3rem;max-width:500px;line-height:1.7}
+.productos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.prod-card{background:var(--blanco);border-radius:8px;overflow:hidden;border:1px solid var(--borde);transition:transform 0.2s,box-shadow 0.2s;cursor:pointer}
+.prod-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.12)}
+.prod-img{background:linear-gradient(135deg,#f5f0e8,#e8e0d0);height:220px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative}
+.prod-badge-nuevo{position:absolute;top:10px;left:10px;background:var(--acento2);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px}
+.prod-badge-oferta{position:absolute;top:10px;left:10px;background:var(--negro);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:4px}
+.prod-info{padding:1rem}
+.prod-cat{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--texto-muted);margin-bottom:4px}
+.prod-nombre{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:6px}
+.prod-precio{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--negro)}
+.prod-precio-old{font-size:0.85rem;color:var(--texto-muted);text-decoration:line-through;margin-left:6px}
+.prod-btn{display:block;width:100%;background:var(--negro);color:var(--blanco);border:none;border-radius:4px;padding:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:0.75rem;text-decoration:none;text-align:center;transition:background 0.2s}.prod-btn:hover{background:var(--acento);color:var(--negro)}
+.categorias{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.cat-btn{background:var(--blanco);border:1.5px solid var(--borde);border-radius:4px;padding:8px 20px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s}
+.cat-btn:hover,.cat-btn.active{background:var(--negro);color:var(--blanco);border-color:var(--negro)}
+.comprar-wrap{background:var(--negro);padding:5rem 2rem;text-align:center}
+.comprar-wrap h2{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:var(--blanco);margin-bottom:0.5rem;letter-spacing:-1px}
+.comprar-wrap h2 em{font-style:normal;color:var(--acento)}
+.comprar-wrap p{color:rgba(255,255,255,0.6);font-size:15px;margin-bottom:0.75rem}
+.comprar-precio{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--acento);margin-bottom:1.5rem;display:block}
+.btn-comprar-mp{background:var(--acento);color:var(--negro);border-radius:8px;padding:18px 40px;font-size:16px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:10px;margin-bottom:1.5rem;transition:all 0.2s}.btn-comprar-mp:hover{background:#d4b030;transform:translateY(-2px);color:var(--negro)}
+.contact-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.contact-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:12px 24px;font-size:13px;font-weight:600;color:var(--blanco);text-decoration:none;transition:all 0.2s}.contact-btn:hover{background:rgba(255,255,255,0.2);transform:translateY(-2px);color:var(--blanco)}
+.comprar-nota{font-size:12px;color:rgba(255,255,255,0.3)}
+footer{background:#050505;color:rgba(255,255,255,0.3);padding:1.5rem;text-align:center;font-size:12px}footer span{color:var(--acento)}
+.alert{display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--acento2);color:white;padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;z-index:999;white-space:nowrap}
+.reveal{opacity:0;transform:translateY(24px);transition:all 0.6s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero{padding:7rem 1.5rem 3rem}.productos-grid{grid-template-columns:repeat(2,1fr)}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="demo-badge">✦ PÁGINA DEMO</div>
+<div class="alert" id="alert"></div>
+<nav>
+  <div class="nav-logo">Moda<span>Libre</span></div>
+  <ul class="nav-links">
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#comprar">Quiero mi tienda</a></li>
+  </ul>
+  <a href="#productos" class="nav-cta">Ver colección</a>
+</nav>
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">👗 Moda & Estilo</div>
+      <h1>Vestite con tu <em>esencia</em></h1>
+      <p class="hero-sub">Ropa para mujeres que saben lo que quieren. Colecciones nuevas cada semana, envíos a todo el país.</p>
+      <div class="hero-btns">
+        <a href="#productos" class="btn-gold">Ver colección</a>
+        <a href="https://wa.me/5490000000000" class="btn-outline">💬 Consultar</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-item"><span class="hero-item-emoji">👗</span><span class="hero-item-name">Vestidos</span><span class="hero-item-precio">desde $15.000</span></div>
+      <div class="hero-item"><span class="hero-item-emoji">👠</span><span class="hero-item-name">Calzado</span><span class="hero-item-precio">desde $20.000</span></div>
+      <div class="hero-item"><span class="hero-item-emoji">👜</span><span class="hero-item-name">Accesorios</span><span class="hero-item-precio">desde $8.000</span></div>
+      <div class="hero-item"><span class="hero-item-emoji">🧥</span><span class="hero-item-name">Abrigos</span><span class="hero-item-precio">desde $25.000</span></div>
+    </div>
+  </div>
+</section>
+<div class="section-wrap light" id="productos">
+  <div class="section">
+    <span class="section-tag reveal">Nueva colección</span>
+    <h2 class="section-title reveal">Lo más <em>trendy</em></h2>
+    <div class="categorias reveal">
+      <button class="cat-btn active">Todos</button>
+      <button class="cat-btn">Vestidos</button>
+      <button class="cat-btn">Tops</button>
+      <button class="cat-btn">Pantalones</button>
+      <button class="cat-btn">Accesorios</button>
+    </div>
+    <div class="productos-grid">
+      <div class="prod-card reveal"><div class="prod-img"><span class="prod-badge-nuevo">NUEVO</span>👗</div><div class="prod-info"><div class="prod-cat">Vestidos</div><div class="prod-nombre">Vestido floral manga larga</div><div class="prod-precio">$18.000</div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img">👚</div><div class="prod-info"><div class="prod-cat">Tops</div><div class="prod-nombre">Top crop modal negro</div><div class="prod-precio">$9.000<span class="prod-precio-old">$12.000</span></div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img"><span class="prod-badge-nuevo">NUEVO</span>👖</div><div class="prod-info"><div class="prod-cat">Pantalones</div><div class="prod-nombre">Pantalón palazzo beige</div><div class="prod-precio">$15.000</div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img">🧥</div><div class="prod-info"><div class="prod-cat">Abrigos</div><div class="prod-nombre">Blazer oversize camel</div><div class="prod-precio">$28.000</div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img">👗</div><div class="prod-info"><div class="prod-cat">Vestidos</div><div class="prod-nombre">Vestido mini satinado</div><div class="prod-precio">$22.000</div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img"><span class="prod-badge-oferta">-30%</span>👜</div><div class="prod-info"><div class="prod-cat">Accesorios</div><div class="prod-nombre">Cartera struzzo bordó</div><div class="prod-precio">$14.000<span class="prod-precio-old">$20.000</span></div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img">👠</div><div class="prod-info"><div class="prod-cat">Calzado</div><div class="prod-nombre">Stilettos nude taco aguja</div><div class="prod-precio">$24.000</div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+      <div class="prod-card reveal"><div class="prod-img"><span class="prod-badge-nuevo">NUEVO</span>🧣</div><div class="prod-info"><div class="prod-cat">Accesorios</div><div class="prod-nombre">Bufanda lana merino</div><div class="prod-precio">$8.000</div><a href="https://mpago.la/2kBtwce" class="prod-btn">Comprar</a></div></div>
+    </div>
+  </div>
+</div>
+<div class="comprar-wrap" id="comprar">
+  <h2>¿Tenés un negocio de ropa y querés tu <em>tienda online?</em></h2>
+  <p>Vendé con Mercado Pago, mostrá tus productos y recibí pedidos 24/7.</p>
+  <span class="comprar-precio"><small style="font-size:1rem;opacity:0.7;font-family:'DM Sans',sans-serif;">Inversión única </small>$120.000</span>
+  <div style="margin-bottom:1.5rem;"><a href="https://mpago.la/2kBtwce" class="btn-comprar-mp">💳 Comprá tu tienda ahora — $120.000</a></div>
+  <div class="contact-btns">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Vi%20la%20demo%20de%20ropa%20y%20quiero%20mi%20tienda" class="contact-btn">💬 WhatsApp</a>
+    <a href="https://instagram.com/emiliocabania" class="contact-btn">📸 Instagram</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" class="contact-btn">📧 Email</a>
+  </div>
+  <p class="comprar-nota">✓ Entrega en 48hs · ✓ Catálogo online · ✓ Pagos con Mercado Pago · ✓ Hosting gratuito</p>
+</div>
+<footer><span>Moda Libre</span> · Tienda de Ropa · Santiago del Estero 🇦🇷</footer>
+<script>
+  document.querySelectorAll('.cat-btn').forEach(btn=>{btn.addEventListener('click',function(){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');});});
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

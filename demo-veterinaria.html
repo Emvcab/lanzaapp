@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clínica Vet Amigos — Veterinaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--acento:#4caf50;--c1:#0d3b1f;--c2:#1a5c35}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#f5f5f5;color:#0a0a0a;overflow-x:hidden}
+.demo-badge{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--acento);color:#0a0a0a;padding:6px 20px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;z-index:200}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);padding:0 2rem;height:68px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:white;letter-spacing:-0.5px}
+.nav-links{display:flex;gap:2rem;list-style:none}.nav-links a{font-size:12px;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}.nav-links a:hover{color:var(--acento)}
+.nav-cta{background:var(--acento);color:#0a0a0a;border:none;border-radius:6px;padding:10px 20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;text-decoration:none}
+.hero{min-height:80vh;background:linear-gradient(135deg,var(--c1),var(--c2));display:flex;align-items:center;padding:8rem 2rem 4rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.06),transparent 70%)}
+.hero-inner{max-width:700px;margin:0 auto;position:relative;z-index:1}
+.hero-tag{display:inline-block;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acento);font-weight:600;margin-bottom:1.25rem;border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:5px 14px}
+.hero-emoji{font-size:5rem;display:block;margin-bottom:1rem}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:white;line-height:1.1;margin-bottom:1rem;letter-spacing:-1px}
+.hero h1 em{font-style:normal;color:var(--acento)}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.65);line-height:1.8;max-width:500px;margin:0 auto 2rem}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--acento);color:#0a0a0a;border:none;border-radius:6px;padding:14px 28px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s}.btn-primary:hover{transform:translateY(-2px);opacity:0.9;color:#0a0a0a}
+.btn-outline{background:transparent;color:white;border:1.5px solid rgba(255,255,255,0.4);border-radius:6px;padding:14px 28px;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.2s}.btn-outline:hover{border-color:var(--acento);color:var(--acento)}
+.section-wrap{padding:5rem 2rem;background:white}.section-wrap.gray{background:#f5f5f5}
+.section{max-width:1100px;margin:0 auto}
+.section-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--acento);font-weight:600;margin-bottom:0.75rem;display:block;filter:brightness(0.7)}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;margin-bottom:0.5rem;letter-spacing:-0.5px}
+.section-sub{font-size:14px;color:#666;margin-bottom:3rem;max-width:500px;line-height:1.7}
+.servicios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.serv-card{background:white;border-radius:12px;border:1px solid rgba(0,0,0,0.08);padding:1.75rem;transition:transform 0.2s,box-shadow 0.2s}
+.serv-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.1)}
+.serv-icon{font-size:2rem;margin-bottom:0.75rem;display:block}
+.serv-nombre{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.4rem}
+.serv-desc{font-size:12px;color:#666;line-height:1.6;margin-bottom:0.75rem}
+.serv-precio{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#0a0a0a}
+.serv-duracion{font-size:11px;color:#999;margin-top:2px}
+.serv-btn{display:block;width:100%;background:#f0f0f0;color:#0a0a0a;border:none;border-radius:6px;padding:9px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:1rem;text-decoration:none;transition:all 0.2s;text-align:center}.serv-btn:hover{background:var(--acento);color:#0a0a0a}
+.contacto-bar{background:#0a0a0a;padding:2rem;display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap}
+.contacto-bar a{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;color:white;text-decoration:none;transition:all 0.2s}.contacto-bar a:hover{background:rgba(255,255,255,0.2);color:white}
+footer{background:#050505;color:rgba(255,255,255,0.3);padding:1.5rem;text-align:center;font-size:12px}footer span{color:var(--acento)}
+.alert{display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#0a0a0a;color:white;padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;z-index:999;white-space:nowrap}
+.reveal{opacity:0;transform:translateY(24px);transition:all 0.6s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.servicios-grid{grid-template-columns:1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div class="demo-badge">✦ PÁGINA DEMO</div>
+<div class="alert" id="alert"></div>
+<nav>
+  <div class="nav-logo">Clínica Vet Amigos — Veterinaria</div>
+  <ul class="nav-links">
+    <li><a href="#servicios">Productos</a></li>
+    <li><a href="#comprar">Quiero mi página</a></li>
+  </ul>
+  <a href="https://wa.me/5490000000000" class="nav-cta">Pedir ahora</a>
+</nav>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">🐾 Veterinaria</div>
+    <span class="hero-emoji">🐾</span>
+    <h1>Tu mascota merece lo <em>mejor</em></h1>
+    <p class="hero-sub">Atención veterinaria integral para perros y gatos. Consultas, vacunas, cirugías y estética. Pedí tu turno online.</p>
+    <div class="hero-btns">
+      <a href="#servicios" class="btn-primary">Ver productos</a>
+      <a href="https://wa.me/5490000000000" class="btn-outline">💬 Pedir por WhatsApp</a>
+    </div>
+  </div>
+</section>
+<div class="section-wrap gray" id="servicios">
+  <div class="section">
+    <span class="section-tag reveal">Lo que ofrecemos</span>
+    <h2 class="section-title reveal">Nuestros <span style="color:var(--acento)">productos</span></h2>
+    <p class="section-sub reveal">Calidad garantizada y precios competitivos para vos.</p>
+    <div class="servicios-grid">
+      <div class="serv-card reveal">
+        <span class="serv-icon">🩺</span>
+        <div class="serv-nombre">Consulta general</div>
+        <div class="serv-desc">Diagnóstico, control de salud y recetas. Para perros y gatos.</div>
+        <div class="serv-precio">$8.000</div>
+        <div class="serv-duracion">⏱ 30 min</div>
+        <a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">💉</span>
+        <div class="serv-nombre">Vacunación</div>
+        <div class="serv-desc">Plan de vacunas completo para tu mascota. Con carnet al día.</div>
+        <div class="serv-precio">$5.000</div>
+        <div class="serv-duracion">⏱ 15 min</div>
+        <a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">✂️</span>
+        <div class="serv-nombre">Estética canina</div>
+        <div class="serv-desc">Baño, corte y arreglo completo según la raza.</div>
+        <div class="serv-precio">$12.000</div>
+        <div class="serv-duracion">⏱ 2 horas</div>
+        <a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">🏥</span>
+        <div class="serv-nombre">Cirugías</div>
+        <div class="serv-desc">Castración, esterilización y procedimientos quirúrgicos.</div>
+        <div class="serv-precio">A consultar</div>
+        <div class="serv-duracion">⏱ Según cirugía</div>
+        <a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">🦷</span>
+        <div class="serv-nombre">Odontología</div>
+        <div class="serv-desc">Limpieza dental y tratamientos bucales para mascotas.</div>
+        <div class="serv-precio">$10.000</div>
+        <div class="serv-duracion">⏱ 1 hora</div>
+        <a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a>
+      </div>
+      <div class="serv-card reveal">
+        <span class="serv-icon">🚨</span>
+        <div class="serv-nombre">Urgencias</div>
+        <div class="serv-desc">Atención de urgencias veterinarias. Consultá disponibilidad.</div>
+        <div class="serv-precio">A consultar</div>
+        <div class="serv-duracion">⏱ Inmediato</div>
+        <a href="https://wa.me/5490000000000" class="serv-btn">Consultar</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="background:#0a0a0a;padding:4rem 2rem;text-align:center;">
+  <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:white;margin-bottom:0.5rem;">¿Tenés un negocio de veterinaria?</h2>
+  <p style="color:rgba(255,255,255,0.7);font-size:15px;margin-bottom:0.75rem;">Esta página puede ser tuya — con tus productos, precios y pagos online.</p>
+  <div style="font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:white;margin-bottom:1.5rem;"><small style="font-size:1rem;opacity:0.7;font-family:'DM Sans',sans-serif;">Inversión única </small>$120.000</div>
+  <div style="margin-bottom:1.5rem;">
+    <a href="https://mpago.la/2kBtwce" style="background:#4caf50;color:#0a0a0a;border-radius:10px;padding:16px 36px;font-size:15px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:10px;">💳 Comprá tu página ahora — $120.000</a>
+  </div>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;">
+    <a href="https://wa.me/5493855773682?text=Hola!%20Vi%20la%20demo%20y%20quiero%20mi%20pagina" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;color:white;text-decoration:none;">💬 WhatsApp</a>
+    <a href="https://instagram.com/emiliocabania" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;color:white;text-decoration:none;">📸 Instagram</a>
+    <a href="mailto:teseoariadnaperseo@gmail.com" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;color:white;text-decoration:none;">📧 Email</a>
+  </div>
+  <p style="font-size:12px;color:rgba(255,255,255,0.4);">✓ Entrega en 48hs · ✓ Pagos con Mercado Pago · ✓ Catálogo online · ✓ Hosting gratuito</p>
+</div>
+<div class="contacto-bar">
+  <a href="https://wa.me/5490000000000">💬 Pedir por WhatsApp</a>
+  <a href="https://instagram.com/negocio">📸 Instagram</a>
+  <a href="https://maps.google.com">📍 Cómo llegar</a>
+</div>
+<footer><span>Clínica Vet Amigos — Veterinaria</span> · Santiago del Estero 🇦🇷</footer>
+<script>
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
